@@ -1,14 +1,13 @@
 import { useState } from "react";
 import logo from "../assets/pegasus.svg";
 
-
-interface InputFieldProps {
-	label: string;
-	type: string;
-	placeholder: string;
-	value?: string;
-	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+// interface InputFieldProps {
+// 	label: string;
+// 	type: string;
+// 	placeholder: string;
+// 	value?: string;
+// 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }
 
 const Login: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -19,27 +18,19 @@ const Login: React.FC = () => {
 				background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
 			}}
 		>
-			{/* Decorative circles */}
-			<div
-				className="absolute top-20 left-10 w-32 h-32 rounded-full opacity-20"
-				style={{ background: "#f59f00" }}
-			/>
-			<div
-				className="absolute bottom-20 right-10 w-48 h-48 rounded-full opacity-20"
-				style={{ background: "#7f0921" }}
-			/>
-
 			<div className="w-full max-w-md">
 				{/* Logo/Brand */}
 				<div className="text-center mb-8">
 					<div
-						className="inline-block p-4 rounded-full mb-4"
-						style={{
-							background: "rgba(255, 255, 255, 0.95)",
-							boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-						}}
+						className="inline-block p-0 rounded-full mb-0"
+						style={
+							{
+								// background: "rgba(255, 255, 255, 0.95)",
+								// boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+							}
+						}
 					>
-            <img className="w-22 h-22"src={logo} />
+						<img className="w-72 h-42" src={logo} />
 					</div>
 					<h1 className="text-4xl font-bold text-white mb-2"> Golden Market</h1>
 					<p className="text-white text-opacity-90">
@@ -62,32 +53,34 @@ const Login: React.FC = () => {
 								className="block text-sm font-medium mb-2"
 								style={{ color: "#3434a5" }}
 							>
-								Email Address
+								EMAIL ADDRESS
 							</label>
 							<input
 								type="email"
 								placeholder="you@example.com"
-								className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors"
+								className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors
+								text-white placeholder-gray-500"
 								style={{
 									borderColor: "#41876a40",
 									color: "#3434a5",
 								}}
 							/>
 						</div>
-
 						{/* Password */}
 						<div>
 							<label
 								className="block text-sm font-medium mb-2"
 								style={{ color: "#3434a5" }}
 							>
-								Password
+								PASSWORD
 							</label>
 							<div className="relative">
 								<input
 									type={showPassword ? "text" : "password"}
-									placeholder="Enter your password"
-									className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors pr-12"
+									placeholder="Enter password"
+									className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors pr-12
+									text-white placeholder-gray-500
+									"
 									style={{
 										borderColor: "#41876a40",
 										color: "#3434a5",
@@ -160,12 +153,12 @@ const Login: React.FC = () => {
 						{/* Submit Button */}
 						<button
 							type="submit"
-							className="w-full py-3 rounded-lg font-semibold text-white transition-all transform hover:scale-105 active:scale-95 shadow-lg"
+							className="w-full py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105 active:scale-95 shadow-lg"
 							style={{
-								background: "linear-gradient(135deg, #41876a 0%, #3434a5 100%)",
+								background: "#3434a5",
 							}}
 						>
-							Sign In
+							SIGN IN
 						</button>
 
 						{/* Divider */}
@@ -177,9 +170,7 @@ const Login: React.FC = () => {
 								/>
 							</div>
 							<div className="relative flex justify-center text-sm">
-								<span className="px-2 bg-white" style={{ color: "#3434a580" }}>
-									Or continue with
-								</span>
+								<span className="text-gray-500 px-2 ">Or continue with</span>
 							</div>
 						</div>
 
@@ -239,9 +230,8 @@ const Login: React.FC = () => {
 
 					{/* Sign Up Link */}
 					<div className="mt-6 text-center text-sm">
-						<span style={{ color: "#3434a580" }}>Don't have an account? </span>
+						<span className="text-gray-500">Don't have an account? </span>
 						<button
-							// onClick={() => setCurrentPage("register")}
 							className="font-semibold hover:underline"
 							style={{ color: "#41876a" }}
 						>

@@ -1,91 +1,90 @@
-const RegisterPage = () => (
+const Register: React.FC = () => (
 	<div
 		className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-		style={{ background: "#0a0a0a" }}
+		style={{
+			background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
+		}}
 	>
-		<div
-			className="absolute inset-0 opacity-30"
-			style={{
-				background:
-					"radial-gradient(circle at 80% 20%, #3434a5 0%, transparent 50%), radial-gradient(circle at 20% 80%, #7f0921 0%, transparent 50%)",
-			}}
-		></div>
-
 		<div className="w-full max-w-2xl relative z-10">
 			<div className="text-center mb-8">
-				<h1
-					className="text-4xl font-bold mb-2 text-transparent bg-clip-text"
-					style={{
-						backgroundImage:
-							"linear-gradient(135deg, #f59f00 0%, #ffffff 50%, #f59f00 100%)",
-					}}
-				>
+				<h1 className="text-4xl font-bold text-white mb-2">
 					Join Golden Market
 				</h1>
-				<p className="text-gray-400">Become a premium member today</p>
+				<p className="text-white-text-opacity-90">Become a member today</p>
 			</div>
 
+			{/* Register Card */}
 			<div
 				className="rounded-2xl p-8 backdrop-blur-xl"
 				style={{
-					background:
-						"linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%)",
-					border: "1px solid rgba(245, 159, 0, 0.2)",
-					boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)",
+					background: "rgba(255, 255, 255, 0.95)",
+					boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
 				}}
 			>
 				<form className="space-y-5">
+					{/* FirstName */}
 					<div className="grid grid-cols-2 gap-4">
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#f59f00" }}
+								style={{ color: "#3434a5" }}
 							>
 								FIRST NAME
 							</label>
 							<input
 								type="text"
-								placeholder="John"
-								className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+								placeholder="First Name"
+								className="w-full px-4 py-3 rounded-xl
+								border-2
+								focus:outline-none
+								focus:border-current
+								placeholder-gray-500"
 								style={{
-									background: "rgba(0, 0, 0, 0.5)",
-									border: "1px solid rgba(245, 159, 0, 0.3)",
+									borderColor: "#41876a40",
+									color: "#3434a5",
 								}}
 							/>
 						</div>
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#f59f00" }}
+								style={{ color: "#3434a5" }}
 							>
 								LAST NAME
 							</label>
 							<input
 								type="text"
-								placeholder="Doe"
-								className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+								placeholder="Last Name"
+								className="w-full px-4 py-3 rounded-xl
+								border-2
+								focus:outline-none
+								focus:border-current
+								placeholder-gray-500"
 								style={{
-									background: "rgba(0, 0, 0, 0.5)",
-									border: "1px solid rgba(245, 159, 0, 0.3)",
+									borderColor: "#41876a40",
+									color: "#3434a5",
 								}}
 							/>
 						</div>
 					</div>
-
 					<div>
 						<label
 							className="block text-sm font-semibold mb-2 tracking-wide"
-							style={{ color: "#f59f00" }}
+							style={{ color: "#3434a5" }}
 						>
 							USERNAME
 						</label>
 						<input
 							type="text"
-							placeholder="johndoe"
-							className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+							placeholder="Username"
+							className="w-full px-4 py-3 rounded-xl
+								border-2
+								focus:outline-none
+								focus:border-current
+								placeholder-gray-500"
 							style={{
-								background: "rgba(0, 0, 0, 0.5)",
-								border: "1px solid rgba(245, 159, 0, 0.3)",
+								borderColor: "#41876a40",
+								color: "#3434a5",
 							}}
 						/>
 					</div>
@@ -93,53 +92,63 @@ const RegisterPage = () => (
 					<div>
 						<label
 							className="block text-sm font-semibold mb-2 tracking-wide"
-							style={{ color: "#f59f00" }}
+							style={{ color: "#3434a5" }}
 						>
-							EMAIL
+							EMAIL ADDRESS
 						</label>
 						<input
 							type="email"
-							placeholder="john@example.com"
-							className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+							placeholder="you@example.com"
+							className="w-full px-4 py-3 rounded-xl text-white
+							border-2
+							focus:out-line-none
+							placeholder-gray-500"
 							style={{
-								background: "rgba(0, 0, 0, 0.5)",
-								border: "1px solid rgba(245, 159, 0, 0.3)",
+								borderColor: "#41876a40",
+								color: "#3434a5",
 							}}
 						/>
 					</div>
-
 					<div className="grid grid-cols-2 gap-4">
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#f59f00" }}
+								style={{ color: "#3434a5" }}
 							>
 								PASSWORD
 							</label>
 							<input
 								type="password"
 								placeholder="Min. 8 characters"
-								className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+								className="w-full px-4 py-3 rounded-xl
+								border-2
+								focus:outline-none
+								focus:-border-current
+								text-white placeholder-gray-500"
 								style={{
-									background: "rgba(0, 0, 0, 0.5)",
-									border: "1px solid rgba(245, 159, 0, 0.3)",
+									borderColor: "#41876a40",
+									color: "#3434a5",
 								}}
 							/>
 						</div>
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#f59f00" }}
+								style={{ color: "#3434a5" }}
 							>
 								CONFIRM
 							</label>
 							<input
 								type="password"
-								placeholder="Re-enter"
-								className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500"
+								placeholder="Re-enter Password"
+								className="w-full px-4 py-3 rounded-xl
+								border-2
+								focus:outline-none
+								focus:-border-current
+								text-white placeholder-gray-500"
 								style={{
-									background: "rgba(0, 0, 0, 0.5)",
-									border: "1px solid rgba(245, 159, 0, 0.3)",
+									borderColor: "#41876a40",
+									color: "#3434a5",
 								}}
 							/>
 						</div>
@@ -147,21 +156,23 @@ const RegisterPage = () => (
 
 					<button
 						type="submit"
-						className="w-full py-4 rounded-xl font-bold text-black tracking-wide"
+						className="w-full py-4 rounded-xl font-bold text-white tracking-wide
+						transition-all transform hover:scale-105 active:scale-95
+						"
 						style={{
-							background: "linear-gradient(135deg, #f59f00 0%, #ba5411 100%)",
-							boxShadow: "0 10px 40px rgba(245, 159, 0, 0.3)",
+							background: "#3434a5",
 						}}
 					>
 						CREATE ACCOUNT
 					</button>
 				</form>
-
 				<div className="mt-6 text-center text-sm">
 					<span className="text-gray-500">Already a member? </span>
 					<button
-						className="font-semibold"
-						style={{ color: "#f59f00" }}
+						className="font-semibold
+						hover:underline
+					"
+						style={{ color: "#41876a" }}
 					>
 						Sign in
 					</button>
@@ -171,4 +182,4 @@ const RegisterPage = () => (
 	</div>
 );
 
-export default RegisterPage
+export default Register;
