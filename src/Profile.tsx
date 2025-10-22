@@ -1,6 +1,8 @@
 const ProfilePage = () => {
 	return (
+		//background
 		<div className="min-h-screen" style={{ background: "#ded6d6" }}>
+			{/* banner */}
 			<header
 				className="border-b"
 				style={{
@@ -10,6 +12,7 @@ const ProfilePage = () => {
 			>
 				<div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 					<div className="flex items-center gap-3">
+						{/* logo */}
 						<div
 							className="p-2 rounded-lg"
 							style={
@@ -47,7 +50,10 @@ const ProfilePage = () => {
 						background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
 					}}
 				>
-					<h2 className="text-3xl font-bold text-white mb-1">
+					<h2
+						className="text-3xl font-bold  mb-1"
+						style={{ color: "#ded6d6" }}
+					>
 						Welcome back, John!
 					</h2>
 				</div>
