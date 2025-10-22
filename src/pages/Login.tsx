@@ -23,16 +23,27 @@ const Login: React.FC = () => {
 				<div className="text-center mb-8">
 					<div
 						className="inline-block p-0 rounded-full mb-0"
-						style={
-							{
-								// background: "rgba(255, 255, 255, 0.95)",
-								// boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-							}
-						}
+						// style={{
+						// 	background: "rgba(218, 184, 15, 0.95)",
+						// 	boxShadow: "0 8px 32px rgba(19, 4, 4, 0.1)",
+						// }}
+						style={{
+							backgroundImage:
+								"linear-gradient(135deg, #f59f00 0%, #ba5411 100%)",
+						}}
 					>
-						<img className="w-72 h-42" src={logo} />
+						<img className="w-52 h-52" src={logo} />
 					</div>
-					<h1 className="text-4xl font-bold text-white mb-2"> Golden Market</h1>
+					<h1
+						className="text-4xl font-bold text-transparent bg-clip-text"
+						style={{
+							backgroundImage:
+								"linear-gradient(135deg, #f59f00 0%, #ffffff 100%)",
+						}}
+					>
+						{" "}
+						Golden Market
+					</h1>
 					<p className="text-white text-opacity-90">
 						Welcome back! Sign in to continue
 					</p>
@@ -50,7 +61,7 @@ const Login: React.FC = () => {
 						{/* Email */}
 						<div>
 							<label
-								className="block text-sm font-medium mb-2"
+								className="block text-sm font-semibold mb-2"
 								style={{ color: "#3434a5" }}
 							>
 								EMAIL ADDRESS
@@ -69,7 +80,7 @@ const Login: React.FC = () => {
 						{/* Password */}
 						<div>
 							<label
-								className="block text-sm font-medium mb-2"
+								className="block text-sm font-semibold mb-2"
 								style={{ color: "#3434a5" }}
 							>
 								PASSWORD
@@ -77,7 +88,7 @@ const Login: React.FC = () => {
 							<div className="relative">
 								<input
 									type={showPassword ? "text" : "password"}
-									placeholder="Enter password"
+									placeholder="enter password"
 									className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors pr-12
 									text-white placeholder-gray-500
 									"

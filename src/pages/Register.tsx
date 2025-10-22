@@ -7,10 +7,16 @@ const Register: React.FC = () => (
 	>
 		<div className="w-full max-w-2xl relative z-10">
 			<div className="text-center mb-8">
-				<h1 className="text-4xl font-bold text-white mb-2">
+				<h1
+					className="text-4xl font-bold text-transparent bg-clip-text"
+					style={{
+						backgroundImage:
+							"linear-gradient(135deg, #f59f00 0%, #ffffff 100%)",
+					}}
+				>
 					Join Golden Market
 				</h1>
-				<p className="text-white-text-opacity-90">Become a member today</p>
+				<p className="text-white-text-opacity-90">Become a member today!</p>
 			</div>
 
 			{/* Register Card */}
@@ -61,7 +67,7 @@ const Register: React.FC = () => (
 								focus:border-current
 								placeholder-gray-500"
 								style={{
-									borderColor: "#41876a40",
+									borderColor: "rgba(65, 135, 106, 0.251)",
 									color: "#3434a5",
 								}}
 							/>
@@ -76,7 +82,7 @@ const Register: React.FC = () => (
 						</label>
 						<input
 							type="text"
-							placeholder="Username"
+							placeholder="username"
 							className="w-full px-4 py-3 rounded-xl
 								border-2
 								focus:outline-none
