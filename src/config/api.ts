@@ -15,21 +15,22 @@ export const API_ENDPOINTS = {
 
 export const apiClient = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async post(url: string, data: any) {
-    const response = await fetch(url, {
+	async post(url: string, data: any) {
+		const response = await fetch(url, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
-      },
+			},
 			credentials: "include",
 			body: new URLSearchParams(data),
 		});
 
 		if (!response.ok) {
 			const error = await response.text();
-			throw new Error(`${error}`);
-		}
-		return response.json();
+			throw new Error(error || `HTTP${response.status}: Request failed`);
+    }
+
+    return response.json();
 	},
 
 	async get(url: string, token?: string) {
@@ -42,13 +43,13 @@ export const apiClient = {
 		}
 
 		const response = await fetch(url, {
-			method: "GET",
+			method: 'GET',
 			headers,
-			credentials: "include",
+			credentials: 'include',
 		});
 
 		if (!response.ok) {
-			throw new Error(`${response.statusText}`);
+			throw new Error(`HTTP${response.status}: Request failed`);
 		}
 
 		return response.json();

@@ -253,14 +253,15 @@ const Register: React.FC = () => {
 					</form>
 					<div className="mt-6 text-center text-sm">
 						<span className="text-gray-500">Already a member? </span>
-						<button
+						<a
+							href="/login"
 							className="font-semibold
 						hover:underline
 					"
 							style={{ color: "#41876a" }}
 						>
 							Sign in
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>
