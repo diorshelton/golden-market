@@ -1,16 +1,41 @@
 import { useState } from "react";
+import { API_ENDPOINTS, apiClient } from "../config/api";
 import logo from "../assets/pegasus.svg";
-
-// interface InputFieldProps {
-// 	label: string;
-// 	type: string;
-// 	placeholder: string;
-// 	value?: string;
-// 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-// }
 
 const Login: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+	});
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setError("");
+		setLoading(true);
+
+		try {
+			const response = await apiClient.post(API_ENDPOINTS.auth.login, formData);
+			// Store access token
+			localStorage.setItem("access_token", response.token);
+			// Refresh the token is in HttpOnly cookie
+			window.location.href = "/profile";
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			setError(err.message || "Login failed");
+		} finally {
+			setLoading(false);
+		}
+	};
 	return (
 		<div
 			className="min-h-screen flex items-center justify-center p-4"
@@ -35,13 +60,12 @@ const Login: React.FC = () => {
 						<img className="w-52 h-52" src={logo} />
 					</div>
 					<h1
-						className="text-4xl font-bold text-transparent bg-clip-text"
+						className="text-4xl font-bold text-transparent bg-clip-text mb-4"
 						style={{
 							backgroundImage:
 								"linear-gradient(135deg, #f59f00 0%, #ffffff 100%)",
 						}}
 					>
-						{" "}
 						Golden Market
 					</h1>
 					<p className="text-white text-opacity-90">
@@ -57,7 +81,12 @@ const Login: React.FC = () => {
 						boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
 					}}
 				>
-					<form className="space-y-6">
+					{error && (
+						<div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700">
+							{error}
+						</div>
+					)}
+					<form className="space-y-6" onSubmit={handleSubmit}>
 						{/* Email */}
 						<div>
 							<label
@@ -68,7 +97,11 @@ const Login: React.FC = () => {
 							</label>
 							<input
 								type="email"
+								name="email"
+								value={formData.email}
+								onChange={handleChange}
 								placeholder="you@example.com"
+								required
 								className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors
 								text-white placeholder-gray-500"
 								style={{
@@ -88,7 +121,11 @@ const Login: React.FC = () => {
 							<div className="relative">
 								<input
 									type={showPassword ? "text" : "password"}
+									name="password"
+									value={formData.password}
+									onChange={handleChange}
 									placeholder="enter password"
+									required
 									className="w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-current transition-colors pr-12
 									text-white placeholder-gray-500
 									"
@@ -164,12 +201,13 @@ const Login: React.FC = () => {
 						{/* Submit Button */}
 						<button
 							type="submit"
+							disabled={loading}
 							className="w-full py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105 active:scale-95 shadow-lg"
 							style={{
 								background: "#3434a5",
 							}}
 						>
-							SIGN IN
+							{loading ? "SIGNING IN...":"SIGN IN"  }
 						</button>
 
 						{/* Divider */}
@@ -180,13 +218,13 @@ const Login: React.FC = () => {
 									style={{ borderColor: "#41876a20" }}
 								/>
 							</div>
-							<div className="relative flex justify-center text-sm">
+							{/* <div className="relative flex justify-center text-sm">
 								<span className="text-gray-500 px-2 ">Or continue with</span>
-							</div>
+							</div> */}
 						</div>
 
 						{/* Social Login */}
-						<div className="grid grid-cols-2 gap-3">
+						{/* <div className="grid grid-cols-2 gap-3">
 							<button
 								type="button"
 								className="flex items-center justify-center gap-2 py-3 rounded-lg border-2 font-medium transition-all hover:shadow-md"
@@ -236,18 +274,19 @@ const Login: React.FC = () => {
 								</svg>
 								GitHub
 							</button>
-						</div>
+						</div> */}
 					</form>
 
 					{/* Sign Up Link */}
 					<div className="mt-6 text-center text-sm">
 						<span className="text-gray-500">Don't have an account? </span>
-						<button
+						<a
+							href="/register"
 							className="font-semibold hover:underline"
 							style={{ color: "#41876a" }}
 						>
 							Sign up for free
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>
