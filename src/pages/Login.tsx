@@ -49,10 +49,6 @@ const Login: React.FC = () => {
 					<div className="text-center mb-8">
 						<div
 							className="inline-block p-0 rounded-full mb-0"
-							// style={{
-							// 	background: "rgba(218, 184, 15, 0.95)",
-							// 	boxShadow: "0 8px 32px rgba(19, 4, 4, 0.1)",
-							// }}
 							style={{
 								backgroundImage:
 									"linear-gradient(135deg, #f59f00 0%, #ba5411 100%)",
