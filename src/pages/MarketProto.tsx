@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../assets/pegasus.svg"
+import logo from "../assets/pegasus.svg";
 
 // Mock product data - replace with API call later
 const mockProducts = [
@@ -152,7 +152,6 @@ const MarketProto = () => {
 					>
 						<img className="w-52 h-52" src={logo} />
 					</div>
-
 				</div>
 				<div className="max-w-7xl mx-auto text-center">
 					<h2
