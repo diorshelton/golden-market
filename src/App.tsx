@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MarketProto from "./pages/MarketProto";
 
 function App() {
 	return (
@@ -18,7 +19,7 @@ function App() {
 						</ProtectedRoute>
 					}
 				/>
-				<Route path="/" element={<Navigate to="/login" replace />} />
+				<Route path="/" element={<MarketProto/>} />
 			</Routes>
 		</BrowserRouter>
 	);
