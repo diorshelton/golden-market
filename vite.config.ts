@@ -12,5 +12,5 @@ export default defineConfig({
 		}),
 		tailwindcss(),
 	],
-	base:'/golden-market'
+	base:'/'
 });

@@ -9,6 +9,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
+				<Route path="/" element={<MarketProto/>} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route
@@ -19,7 +20,6 @@ function App() {
 						</ProtectedRoute>
 					}
 				/>
-				<Route path="/" element={<MarketProto/>} />
 			</Routes>
 		</BrowserRouter>
 	);
