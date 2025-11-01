@@ -7,9 +7,9 @@ import MarketProto from "./pages/MarketProto";
 
 function App() {
 	return (
-		<BrowserRouter basename={import.meta.env.DEV ? '/' : '/golden-market/'}>
+		<BrowserRouter basename={import.meta.env.DEV ? "/" : "/golden-market/"}>
 			<Routes>
-				<Route path="/" element={<MarketProto/>} />
+				<Route path="/" element={<MarketProto />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route
