@@ -2,6 +2,7 @@
   "name": "golden-market-fe",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://diorshelton.github.io/golden-market",
   "type": "module",
   "scripts": {
     "dev": "vite",
