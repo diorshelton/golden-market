@@ -6,8 +6,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import MarketProto from "./pages/MarketProto";
 
 function App() {
+	// Detect environment
+	const devEnvironment = import.meta.env.DEV
 	return (
-		<BrowserRouter basename={import.meta.env.DEV ? "/" : "/golden-market/"}>
+		<BrowserRouter basename={devEnvironment ? "/" : "/golden-market/"}>
 			<Routes>
 				<Route path="/" element={<MarketProto />} />
 				<Route path="/login" element={<Login />} />
