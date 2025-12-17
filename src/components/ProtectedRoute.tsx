@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { API_ENDPOINTS, apiClient } from "../config/api";
+import { useNavigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
 	children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		checkAuth();
@@ -17,7 +19,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 		const token = localStorage.getItem("access_token");
 
 		if (!token) {
-			window.location.href = "/login";
+			navigate("/login");
+			setIsLoading(false);
 			return;
 		}
 
@@ -38,7 +41,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         console.error(refreshError)
 				//  Refresh failed, redirect to login
 				localStorage.removeItem("access_token");
-				window.location.href = "/login";
+				navigate("/login");
 			}
 		} finally {
 			setIsLoading(false);

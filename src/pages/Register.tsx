@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_ENDPOINTS, apiClient } from "../config/api";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register: React.FC = () => {
 	const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const Register: React.FC = () => {
 			[e.target.name]: e.target.value,
 		});
 	};
+	const navigate = useNavigate();
+
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -32,7 +35,7 @@ const Register: React.FC = () => {
 			);
 			console.log("Registration successful", response);
 			//  Handle successful registration (e.g., redirect to login)
-			window.location.href = "/login";
+			navigate("/login");
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			setError(err.message || "Registration failed");
@@ -253,15 +256,15 @@ const Register: React.FC = () => {
 					</form>
 					<div className="mt-6 text-center text-sm">
 						<span className="text-gray-500">Already a member? </span>
-						<a
-							href="/login"
+						<Link
+							to="/login"
 							className="font-semibold
 						hover:underline
 					"
 							style={{ color: "#41876a" }}
 						>
 							Sign in
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>

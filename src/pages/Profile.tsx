@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { API_ENDPOINTS, apiClient } from "../config/api";
+import { useNavigate } from "react-router-dom";
 
 interface UserProfile {
 	id: string;
@@ -15,6 +16,7 @@ const ProfilePage = () => {
 	const [profile, setProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetchProfile();
@@ -24,10 +26,11 @@ const ProfilePage = () => {
 		try {
 			const token = localStorage.getItem("access_token");
 			if (!token) {
-				window.location.href = "/login";
+				// No token, redirect to login
+				localStorage.removeItem("access_token");
+				navigate("/login");
 				return;
 			}
-
 			const data = await apiClient.get(API_ENDPOINTS.user.profile, token);
 			setProfile(data);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +56,7 @@ const ProfilePage = () => {
 			console.error(err)
 			// Refresh failed, redirect to login
 			localStorage.removeItem("access_token");
-			window.location.href = "/login";
+			navigate("/login");
 		}
 	};
 
@@ -65,7 +68,7 @@ const ProfilePage = () => {
 		} finally {
 			// Clear local storage and redirect regardless of API result
 			localStorage.removeItem("access_token");
-			window.location.href = "/login";
+			navigate("/login");
 		}
 	};
 
@@ -97,7 +100,7 @@ const ProfilePage = () => {
 						{error || "Failed to load profile"}
 					</p>
 					<button
-						onClick={() => (window.location.href = "/login")}
+						onClick={() => navigate("/login")}
 						className="px-6 py-2 rounded-lg text-white font-medium"
 						style={{ background: "#3434a5" }}
 					>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { API_ENDPOINTS, apiClient } from "../config/api";
 import logo from "../assets/pegasus.svg";
+import { useNavigate , Link} from "react-router-dom";
 
 const Login: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +11,7 @@ const Login: React.FC = () => {
 	});
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData({
@@ -22,13 +24,12 @@ const Login: React.FC = () => {
 		e.preventDefault();
 		setError("");
 		setLoading(true);
-
 		try {
 			const response = await apiClient.post(API_ENDPOINTS.auth.login, formData);
 			// Store access token
 			localStorage.setItem("access_token", response.token);
-			// Refresh the token is in HttpOnly cookie
-			window.location.href = "/profile";
+			// navigate to profile page
+			navigate("/profile");
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			setError(err.message || "Login failed");
@@ -277,13 +278,13 @@ const Login: React.FC = () => {
 						{/* Sign Up Link */}
 						<div className="mt-6 text-center text-sm">
 							<span className="text-gray-500">Don't have an account? </span>
-							<a
-								href="/register"
+							<Link
+								to="/register"
 								className="font-semibold hover:underline"
 								style={{ color: "#41876a" }}
 							>
 								Sign up for free
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>
