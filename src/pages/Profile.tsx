@@ -110,10 +110,9 @@ const ProfilePage = () => {
 			</div>
 		);
 	}
-
 	// Get initials for avatar
-	const initials =
-		`${profile.first_name[0]}${profile.last_name[0]}`.toUpperCase();
+	const initials=
+		`${profile.first_name[0] || ""}${profile.last_name[0] || ""}`.toUpperCase();
 
 	return (
 		<div className="min-h-screen" style={{ background: "#ded6d6" }}>
@@ -178,7 +177,7 @@ const ProfilePage = () => {
 					>
 						<p className="text-white-300 text-sm mb-2">Coin Balance</p>
 						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
-							{profile.balance.toLocaleString()}
+							{profile.balance}
 						</p>
 					</div>
 					<div
