@@ -1,16 +1,17 @@
-import axios from 'axios';
-import type { AxiosInstance } from 'axios';
+import axios from "axios";
+import type { AxiosInstance } from "axios";
 
 const apiClient: AxiosInstance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
+	baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1",
 	headers: {
-		'Content-Type': 'application/json',
+		"Content-Type": "application/json",
 	},
+	withCredentials: true,
 });
 
 // Add token to every request
 apiClient.interceptors.request.use((config) => {
-	const token = localStorage.getItem("access_token");
+	const token = localStorage.getItem("accessToken");
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
@@ -27,21 +28,21 @@ apiClient.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				const refreshToken = localStorage.getItem("refreshToken");
 				const { data } = await axios.post(
 					`${
 						import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1"
 					}/auth/refresh`,
-					{ refresh_token: refreshToken }
+					{},
+					{ withCredentials: true }
 				);
 
-				localStorage.setItem("accessToken", data.access_token);
-				originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+				localStorage.setItem("accessToken", data.token);
+				originalRequest.headers.Authorization = `Bearer ${data.token}`;
 
 				return apiClient(originalRequest);
 			} catch (refreshError) {
 				localStorage.clear();
-				window.location.href = "/login";
+				window.location.href = `${import.meta.env.BASE_URL}login`;
 				return Promise.reject(refreshError);
 			}
 		}

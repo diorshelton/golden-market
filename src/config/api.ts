@@ -1,14 +1,14 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
 
 export const API_ENDPOINTS = {
 	auth: {
-		register: `${API_BASE_URL}/api/v1/auth/register`,
-		login: `${API_BASE_URL}/api/v1/auth/login`,
-		refresh: `${API_BASE_URL}/api/v1/auth/refresh`,
-		logout: `${API_BASE_URL}/api/v1/auth/logout`,
+		register: `${API_BASE_URL}/auth/register`,
+		login: `${API_BASE_URL}/auth/login`,
+		refresh: `${API_BASE_URL}/auth/refresh`,
+		logout: `${API_BASE_URL}/auth/logout`,
 	},
 	user: {
-		profile: `${API_BASE_URL}/api/v1/profile`,
+		profile: `${API_BASE_URL}/profile`,
 	},
 };
 // Additional endpoints as needed
@@ -38,8 +38,10 @@ export const apiClient = {
 			"Content-Type": "application/json",
 		};
 
-		if (token) {
-			headers["Authorization"] = `Bearer ${token}`;
+		// Use provided token or get from localStorage
+		const authToken = token || localStorage.getItem("accessToken");
+		if (authToken) {
+			headers["Authorization"] = `Bearer ${authToken}`;
 		}
 
 		const response = await fetch(url, {

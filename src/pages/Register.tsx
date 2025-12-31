@@ -1,44 +1,112 @@
 import { useState } from "react";
-import { API_ENDPOINTS, apiClient } from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { validators } from "../utils/validators";
+import { ROUTES } from "../constants";
 
 const Register: React.FC = () => {
 	const [formData, setFormData] = useState({
-		first_name: "",
-		last_name: "",
 		username: "",
+		firstName: "",
+		lastName: "",
 		email: "",
 		password: "",
-		password_confirm: "",
+		confirmPassword: "",
 	});
-	const [error, setError] = useState("");
+	const [errors, setErrors] = useState({
+		username: "",
+		firstName: "",
+		lastName: "",
+		email: "",
+		password: "",
+		confirmPassword: "",
+		general: "",
+	});
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+	const { register } = useAuth();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value,
+			[name]: value,
+		});
+		// Clear error for this field when user types
+		setErrors({
+			...errors,
+			[name]: "",
+			general: "",
 		});
 	};
-	const navigate = useNavigate();
 
+	const validateForm = (): boolean => {
+		const usernameError = validators.username(formData.username);
+		const firstNameError = !formData.firstName ? "First name is required" : "";
+		const lastNameError = !formData.lastName ? "Last name is required" : "";
+		const emailError = validators.email(formData.email);
+		const passwordError = validators.password(formData.password);
+		const confirmPasswordError = validators.confirmPassword(
+			formData.password,
+			formData.confirmPassword
+		);
+
+		setErrors({
+			username: usernameError || "",
+			firstName: firstNameError || "",
+			lastName: lastNameError || "",
+			email: emailError || "",
+			password: passwordError || "",
+			confirmPassword: confirmPasswordError || "",
+			general: "",
+		});
+
+		return (
+			!usernameError &&
+			!firstNameError &&
+			!lastNameError &&
+			!emailError &&
+			!passwordError &&
+			!confirmPasswordError
+		);
+	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setError("");
+
+		if (!validateForm()) {
+			return;
+		}
+
 		setLoading(true);
+		setErrors({
+			username: "",
+			firstName: "",
+			lastName: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+			general: "",
+		});
 
 		try {
-			const response = await apiClient.post(
-				API_ENDPOINTS.auth.register,
-				formData
+			await register(
+				formData.username,
+				formData.firstName,
+				formData.lastName,
+				formData.email,
+				formData.password,
+				formData.confirmPassword
 			);
-			console.log("Registration successful", response);
-			//  Handle successful registration (e.g., redirect to login)
-			navigate("/login");
+			// User is automatically logged in after registration
+			navigate(ROUTES.PROFILE);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
-			setError(err.message || "Registration failed");
+			setErrors({
+				...errors,
+				general:
+					err.response?.data?.error || "Registration failed. Please try again.",
+			});
 		} finally {
 			setLoading(false);
 		}
@@ -62,7 +130,7 @@ const Register: React.FC = () => {
 					>
 						Join Golden Market
 					</h1>
-					<p className="text-white-text-opacity-90">Become a member today!</p>
+					<p className="text-white text-opacity-90">Become a member today!</p>
 				</div>
 
 				{/* Register Card */}
@@ -73,66 +141,14 @@ const Register: React.FC = () => {
 						boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
 					}}
 				>
-					{error && (
+					{errors.general && (
 						<div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700">
-							{error}
+							{errors.general}
 						</div>
 					)}
 
 					<form className="space-y-5" onSubmit={handleSubmit}>
-						{/* FirstName */}
-						<div className="grid grid-cols-2 gap-4">
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									FIRST NAME
-								</label>
-								<input
-									type="text"
-									name="first_name"
-									value={formData.first_name}
-									onChange={handleChange}
-									placeholder="First Name"
-									required
-									className="w-full px-4 py-3 rounded-xl
-								border-2
-								focus:outline-none
-								focus:border-current
-								placeholder-gray-500"
-									style={{
-										borderColor: "#41876a40",
-										color: "#3434a5",
-									}}
-								/>
-							</div>
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									LAST NAME
-								</label>
-								<input
-									type="text"
-									name="last_name"
-									value={formData.last_name}
-									onChange={handleChange}
-									placeholder="Last Name"
-									required
-									className="w-full px-4 py-3 rounded-xl
-								border-2
-								focus:outline-none
-								focus:border-current
-								placeholder-gray-500"
-									style={{
-										borderColor: "rgba(65, 135, 106, 0.251)",
-										color: "#3434a5",
-									}}
-								/>
-							</div>
-						</div>
+						{/* Username */}
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
@@ -146,20 +162,70 @@ const Register: React.FC = () => {
 								value={formData.username}
 								onChange={handleChange}
 								placeholder="username"
-								required
-								minLength={3}
-								maxLength={30}
-								className="w-full px-4 py-3 rounded-xl
-								border-2
-								focus:outline-none
-								focus:border-current
-								placeholder-gray-500"
+								className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
 								style={{
-									borderColor: "#41876a40",
+									borderColor: errors.username ? "#ef4444" : "#41876a40",
 									color: "#3434a5",
 								}}
 							/>
+							{errors.username && (
+								<p className="mt-1 text-sm text-red-600">{errors.username}</p>
+							)}
 						</div>
+
+						{/* First and Last Name */}
+						<div className="grid grid-cols-2 gap-4">
+							<div>
+								<label
+									className="block text-sm font-semibold mb-2 tracking-wide"
+									style={{ color: "#3434a5" }}
+								>
+									FIRST NAME
+								</label>
+								<input
+									type="text"
+									name="firstName"
+									value={formData.firstName}
+									onChange={handleChange}
+									placeholder="First name"
+									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
+									style={{
+										borderColor: errors.firstName ? "#ef4444" : "#41876a40",
+										color: "#3434a5",
+									}}
+								/>
+								{errors.firstName && (
+									<p className="mt-1 text-sm text-red-600">
+										{errors.firstName}
+									</p>
+								)}
+							</div>
+							<div>
+								<label
+									className="block text-sm font-semibold mb-2 tracking-wide"
+									style={{ color: "#3434a5" }}
+								>
+									LAST NAME
+								</label>
+								<input
+									type="text"
+									name="lastName"
+									value={formData.lastName}
+									onChange={handleChange}
+									placeholder="Last name"
+									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
+									style={{
+										borderColor: errors.lastName ? "#ef4444" : "#41876a40",
+										color: "#3434a5",
+									}}
+								/>
+								{errors.lastName && (
+									<p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+								)}
+							</div>
+						</div>
+
+						{/* Email */}
 						<div>
 							<label
 								className="block text-sm font-semibold mb-2 tracking-wide"
@@ -173,17 +239,18 @@ const Register: React.FC = () => {
 								value={formData.email}
 								onChange={handleChange}
 								placeholder="you@example.com"
-								required
-								className="w-full px-4 py-3 rounded-xl text-white
-							border-2
-							focus:out-line-none
-							placeholder-gray-500"
+								className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none placeholder-gray-500"
 								style={{
-									borderColor: "#41876a40",
+									borderColor: errors.email ? "#ef4444" : "#41876a40",
 									color: "#3434a5",
 								}}
 							/>
+							{errors.email && (
+								<p className="mt-1 text-sm text-red-600">{errors.email}</p>
+							)}
 						</div>
+
+						{/* Password Fields */}
 						<div className="grid grid-cols-2 gap-4">
 							<div>
 								<label
@@ -197,20 +264,16 @@ const Register: React.FC = () => {
 									name="password"
 									value={formData.password}
 									onChange={handleChange}
-									required
-									minLength={8}
-									maxLength={64}
 									placeholder="Min. 8 characters"
-									className="w-full px-4 py-3 rounded-xl
-								border-2
-								focus:outline-none
-								focus:-border-current
-								text-white placeholder-gray-500"
+									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
 									style={{
-										borderColor: "#41876a40",
+										borderColor: errors.password ? "#ef4444" : "#41876a40",
 										color: "#3434a5",
 									}}
 								/>
+								{errors.password && (
+									<p className="mt-1 text-sm text-red-600">{errors.password}</p>
+								)}
 							</div>
 							<div>
 								<label
@@ -221,32 +284,30 @@ const Register: React.FC = () => {
 								</label>
 								<input
 									type="password"
-									name="password_confirm"
-									value={formData.password_confirm}
+									name="confirmPassword"
+									value={formData.confirmPassword}
 									onChange={handleChange}
-									required
-									minLength={8}
-									maxLength={64}
 									placeholder="Re-enter Password"
-									className="w-full px-4 py-3 rounded-xl
-								border-2
-								focus:outline-none
-								focus:-border-current
-								text-white placeholder-gray-500"
+									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
 									style={{
-										borderColor: "#41876a40",
+										borderColor: errors.confirmPassword
+											? "#ef4444"
+											: "#41876a40",
 										color: "#3434a5",
 									}}
 								/>
+								{errors.confirmPassword && (
+									<p className="mt-1 text-sm text-red-600">
+										{errors.confirmPassword}
+									</p>
+								)}
 							</div>
 						</div>
 
 						<button
 							type="submit"
 							disabled={loading}
-							className="w-full py-4 rounded-xl font-bold text-white tracking-wide
-						transition-all transform hover:scale-105 active:scale-95
-						"
+							className="w-full py-4 rounded-xl font-bold text-white tracking-wide transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 							style={{
 								background: "#3434a5",
 							}}
@@ -254,13 +315,12 @@ const Register: React.FC = () => {
 							{loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
 						</button>
 					</form>
+
 					<div className="mt-6 text-center text-sm">
 						<span className="text-gray-500">Already a member? </span>
 						<Link
-							to="/login"
-							className="font-semibold
-						hover:underline
-					"
+							to={ROUTES.LOGIN}
+							className="font-semibold hover:underline"
 							style={{ color: "#41876a" }}
 						>
 							Sign in

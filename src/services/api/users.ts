@@ -1,10 +1,13 @@
 import apiClient from "./client";
 
 interface User {
-  id: number;
+  id: string;
   username: string;
   email: string;
-  coins: number;
+  first_name: string;
+  last_name: string;
+  balance: number;
+  inventory: string[];
   created_at: string;
 }
 

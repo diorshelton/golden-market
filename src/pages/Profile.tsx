@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS, apiClient } from "../config/api";
 import { useNavigate } from "react-router-dom";
+import { userService, authService } from "../services/api";
 
 interface UserProfile {
 	id: string;
@@ -24,50 +24,32 @@ const ProfilePage = () => {
 
 	const fetchProfile = async () => {
 		try {
-			const token = localStorage.getItem("access_token");
+			const token = localStorage.getItem("accessToken");
 			if (!token) {
 				// No token, redirect to login
-				localStorage.removeItem("access_token");
 				navigate("/login");
 				return;
 			}
-			const data = await apiClient.get(API_ENDPOINTS.user.profile, token);
+			const data: UserProfile = await userService.getProfile();
 			setProfile(data);
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
-			if (err.message && err.message.includes("401")) {
-				// Token expired, try to refresh
-				await handleTokenRefresh();
-			} else {
-				setError(err.message || "Failed to load profile");
-			}
+			setError(err.response?.data?.error || "Failed to load profile");
+			// If it's a 401, the axios interceptor will handle token refresh automatically
+			// If refresh fails, it will redirect to login
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const handleTokenRefresh = async () => {
-		try {
-			const response = await apiClient.post(API_ENDPOINTS.auth.refresh, {});
-			localStorage.setItem("access_token", response.token);
-			// Retry fetching profile
-			await fetchProfile();
-		} catch (err) {
-			console.error(err)
-			// Refresh failed, redirect to login
-			localStorage.removeItem("access_token");
-			navigate("/login");
-		}
-	};
-
 	const handleLogout = async () => {
 		try {
-			await apiClient.post(API_ENDPOINTS.auth.logout, {});
+			await authService.logout();
 		} catch (err) {
 			console.error("Logout error:", err);
 		} finally {
 			// Clear local storage and redirect regardless of API result
-			localStorage.removeItem("access_token");
+			localStorage.clear();
 			navigate("/login");
 		}
 	};
@@ -111,8 +93,9 @@ const ProfilePage = () => {
 		);
 	}
 	// Get initials for avatar
-	const initials=
-		`${profile.first_name[0] || ""}${profile.last_name[0] || ""}`.toUpperCase();
+	const initials = `${profile.first_name[0] || ""}${
+		profile.last_name[0] || ""
+	}`.toUpperCase();
 
 	return (
 		<div className="min-h-screen" style={{ background: "#ded6d6" }}>
@@ -175,7 +158,7 @@ const ProfilePage = () => {
 							border: "1px solid rgba(65, 135, 106, 0.251)",
 						}}
 					>
-						<p className="text-white-300 text-sm mb-2">Coin Balance</p>
+						<p className="text-gray-300 text-sm mb-2">Coin Balance</p>
 						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
 							{profile.balance}
 						</p>
@@ -187,11 +170,11 @@ const ProfilePage = () => {
 							border: "1px solid rgba(65, 135, 106, 0.251)",
 						}}
 					>
-						<p className="text-white-400 text-sm mb-2">Orders</p>
+						<p className="text-gray-400 text-sm mb-2">Orders</p>
 						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
 							0
 						</p>
-						<p className="text-xs text-white-500 mt-1">Coming soon</p>
+						<p className="text-xs text-gray-500 mt-1">Coming soon</p>
 					</div>
 					<div
 						className="rounded-xl p-6"
@@ -200,11 +183,11 @@ const ProfilePage = () => {
 							border: "1px solid rgba(65, 135, 106, 0.251)",
 						}}
 					>
-						<p className="text-white-400 text-sm mb-2">Items</p>
+						<p className="text-gray-400 text-sm mb-2">Items</p>
 						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
 							0
 						</p>
-						<p className="text-xs text-white-500 mt-1">Coming soon</p>
+						<p className="text-xs text-gray-500 mt-1">Coming soon</p>
 					</div>
 				</div>
 
@@ -222,21 +205,21 @@ const ProfilePage = () => {
 					</h3>
 					<div className="grid grid-cols-2 gap-6 text-gray-300">
 						<div>
-							<p className="text-sm text-white-500 mb-1">Username</p>
+							<p className="text-sm text-gray-500 mb-1">Username</p>
 							<p className="text-lg">@{profile.username}</p>
 						</div>
 						<div>
-							<p className="text-sm text-white-500 mb-1">User ID</p>
-							<p className="text-lg text-xs">{profile.id}</p>
+							<p className="text-sm text-gray-500 mb-1">User ID</p>
+							<p className="text-xs">{profile.id}</p>
 						</div>
 						<div>
-							<p className="text-sm text-white-500 mb-1">Full Name</p>
+							<p className="text-sm text-gray-500 mb-1">Full Name</p>
 							<p className="text-lg">
 								{profile.first_name} {profile.last_name}
 							</p>
 						</div>
 						<div>
-							<p className="text-sm text-white-500 mb-1">Email</p>
+							<p className="text-sm text-gray-500 mb-1">Email</p>
 							<p className="text-lg">{profile.email}</p>
 						</div>
 					</div>

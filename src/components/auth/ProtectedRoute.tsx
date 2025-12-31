@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS, apiClient } from "../config/api";
+import { API_ENDPOINTS, apiClient } from "../../config/api";
+import { useAuth } from "../../hooks/useAuth";
+import { ROUTES } from "../../constants";
 import { useNavigate } from "react-router-dom";
-
 interface ProtectedRouteProps {
 	children: React.ReactNode;
 }
@@ -15,32 +16,39 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 		checkAuth();
 	}, []);
 
+	const authContext = useAuth()
+	console.log(authContext)
 	const checkAuth = async () => {
-		const token = localStorage.getItem("access_token");
+		const token = localStorage.getItem("accessToken");
 
 		if (!token) {
-			navigate("/login");
+			navigate(ROUTES.LOGIN);
 			setIsLoading(false);
 			return;
 		}
 
 		try {
 			//  Try to fetch profile to verify token
-			await apiClient.get(API_ENDPOINTS.user.profile, token);
+			await apiClient.get(API_ENDPOINTS.user.profile);
 			setIsAuthenticated(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      if (err.message && err.message.includes("401"))
-        console.error(err)
-			// Try to refresh token
-			try {
-				const response = await apiClient.post(API_ENDPOINTS.auth.refresh, {});
-				localStorage.setItem("access_token", response.token);
-				setIsAuthenticated(true);
-      } catch (refreshError) {
-        console.error(refreshError)
-				//  Refresh failed, redirect to login
-				localStorage.removeItem("access_token");
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			// Only try to refresh token if it's a 401 (unauthorized) error
+			if (err.message && err.message.includes("401")) {
+				try {
+					const response = await apiClient.post(API_ENDPOINTS.auth.refresh, {});
+					localStorage.setItem("accessToken", response.data.token);
+					setIsAuthenticated(true);
+				} catch (refreshError) {
+					console.error("Token refresh failed:", refreshError);
+					//  Refresh failed, redirect to login
+					localStorage.removeItem("accessToken");
+					navigate("/login");
+				}
+			} else {
+				// For non-401 errors, just fail and redirect
+				console.error("Auth check failed:", err);
+				localStorage.removeItem("accessToken");
 				navigate("/login");
 			}
 		} finally {
