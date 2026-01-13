@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS, apiClient } from "../../config/api";
+import { userService, authService } from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
 import { ROUTES } from "../../constants";
 import { useNavigate } from "react-router-dom";
@@ -29,15 +29,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
 		try {
 			//  Try to fetch profile to verify token
-			await apiClient.get(API_ENDPOINTS.user.profile);
+			await userService.getProfile();
 			setIsAuthenticated(true);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			// Only try to refresh token if it's a 401 (unauthorized) error
 			if (err.message && err.message.includes("401")) {
 				try {
-					const response = await apiClient.post(API_ENDPOINTS.auth.refresh, {});
-					localStorage.setItem("accessToken", response.data.token);
+					const refreshToken = localStorage.getItem("refreshToken") || "";
+					const response = await authService.refresh(refreshToken);
+					localStorage.setItem("accessToken", response.token);
 					setIsAuthenticated(true);
 				} catch (refreshError) {
 					console.error("Token refresh failed:", refreshError);
