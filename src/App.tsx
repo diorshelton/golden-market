@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import MarketProto from "./pages/MarketProto";
+import CartProto from "./pages/CartProto";
 
 function App() {
 	return (
@@ -12,6 +13,7 @@ function App() {
 			<AuthProvider>
 				<Routes>
 					<Route path="/" element={<MarketProto />} />
+					<Route path="/cart" element={<CartProto />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route
