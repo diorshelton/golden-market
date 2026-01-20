@@ -1,4 +1,8 @@
-const Header = (userInitials: string) => {
+interface HeaderProps {
+	userInitials: string;
+}
+
+const Header = ({ userInitials }: HeaderProps) => {
 	return (
 		<header
 			className="border-b"

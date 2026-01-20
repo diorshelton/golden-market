@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { cartService, type CartItemDetail } from "../services/api/cart";
+import { ROUTES } from "../constants";
 
 const Cart = () => {
 	const [cartItems, setCartItems] = useState<CartItemDetail[]>([]);
@@ -190,13 +192,13 @@ const Cart = () => {
 								<p className="text-gray-500 mb-6">
 									Add some delicious items from our market!
 								</p>
-								<a
-									href="/products"
+								<Link
+									to={ROUTES.HOME}
 									className="inline-block px-6 py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105"
 									style={{ background: "#3434a5" }}
 								>
 									Browse Products
-								</a>
+								</Link>
 							</div>
 						) : (
 							cartItems.map((item) => (
@@ -211,14 +213,24 @@ const Cart = () => {
 									<div className="flex gap-4">
 										{/* Product Image */}
 										<div
-											className="w-24 h-24 rounded-lg flex items-center justify-center text-4xl flex-shrink-0 bg-cover bg-center"
+											className="w-24 h-24 rounded-lg flex items-center justify-center text-4xl flex-shrink-0 overflow-hidden"
 											style={{
-												background: item.product.image_url
-													? `url(${item.product.image_url})`
-													: "#f5f5f5",
+												background:
+													"linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
 											}}
 										>
-											{!item.product.image_url && "📦"}
+											{item.product.image_url?.startsWith("http") ||
+											item.product.image_url?.startsWith("/") ? (
+												<img
+													src={item.product.image_url}
+													alt={item.product.name}
+													className="w-full h-full object-cover"
+												/>
+											) : (
+												<span className="text-4xl">
+													{item.product.image_url || "📦"}
+												</span>
+											)}
 										</div>
 
 										{/* Product Details */}
@@ -386,13 +398,13 @@ const Cart = () => {
 								{checkoutLoading ? "PROCESSING..." : "PROCEED TO CHECKOUT"}
 							</button>
 
-							<a
-								href="/"
+							<Link
+								to={ROUTES.HOME}
 								className="block w-full py-3 rounded-lg font-bold text-center transition-all border-2"
 								style={{ borderColor: "#41876a", color: "#41876a" }}
 							>
 								CONTINUE SHOPPING
-							</a>
+							</Link>
 
 							{/* Trust Badges */}
 							<div
