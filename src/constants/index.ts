@@ -14,7 +14,10 @@ export const TOKEN_KEYS = {
 // Route Paths
 export const ROUTES = {
 	HOME: "/",
+	PRODUCTS: "/products",
 	CART: "/cart",
+	ORDERS: "/orders",
+	INVENTORY: "/inventory",
 	LOGIN: "/login",
 	REGISTER: "/register",
 	PROFILE: "/profile",
