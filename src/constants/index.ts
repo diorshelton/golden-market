@@ -14,10 +14,10 @@ export const TOKEN_KEYS = {
 // Route Paths
 export const ROUTES = {
 	HOME: "/",
+	CART: "/cart",
 	LOGIN: "/login",
 	REGISTER: "/register",
 	PROFILE: "/profile",
-	MARKETPLACE: "/marketplace",
 } as const;
 
 // App Configuration
