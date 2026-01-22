@@ -92,47 +92,8 @@ const ProfilePage = () => {
 			</div>
 		);
 	}
-	// Get initials for avatar
-	const initials = `${profile.first_name[0] || ""}${
-		profile.last_name[0] || ""
-	}`.toUpperCase();
-
 	return (
 		<div className="min-h-screen" style={{ background: "#ded6d6" }}>
-			{/* Header/Banner */}
-			<header
-				className="border-b"
-				style={{
-					background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
-					border: "1px solid #41876a40",
-				}}
-			>
-				<div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-					<div className="flex items-center gap-3">
-						<h1
-							className="text-2xl font-bold text-transparent bg-clip-text"
-							style={{
-								backgroundImage:
-									"linear-gradient(135deg, #f59f00 0%, #ffffff 100%)",
-							}}
-						>
-							Golden Market
-						</h1>
-					</div>
-
-					<div
-						className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-black cursor-pointer hover:scale-110 transition-transform"
-						style={{
-							background: "linear-gradient(135deg, #f59f00 0%, #ba5411 100%)",
-							boxShadow: "0 0 20px rgba(245, 159, 0, 0.3)",
-						}}
-						title={`${profile.first_name} ${profile.last_name}`}
-					>
-						{initials}
-					</div>
-				</div>
-			</header>
-
 			<div className="max-w-7xl mx-auto px-4 py-8">
 				{/* Welcome Banner */}
 				<div
