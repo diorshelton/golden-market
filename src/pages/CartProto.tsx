@@ -74,8 +74,7 @@ const Cart = () => {
 	};
 
 	const subtotal = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
-	const tax = Math.round(subtotal * 0.08);
-	const total = subtotal + tax;
+	const total = subtotal;
 
 	const handleCheckout = async () => {
 		setCheckoutLoading(true);
@@ -351,12 +350,6 @@ const Cart = () => {
 									<span className="text-gray-600">Subtotal</span>
 									<span className="font-semibold" style={{ color: "#3434a5" }}>
 										{subtotal} coins
-									</span>
-								</div>
-								<div className="flex justify-between">
-									<span className="text-gray-600">Market Fee (8%)</span>
-									<span className="font-semibold" style={{ color: "#3434a5" }}>
-										{tax} coins
 									</span>
 								</div>
 								<div
