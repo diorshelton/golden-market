@@ -18,7 +18,13 @@ function App() {
 				<Routes>
 					<Route path="/" element={<MarketProto />} />
 					<Route path="/products" element={<MarketProto />} />
-					<Route path="/cart" element={<CartProto />} />
+					<Route path="/cart"
+						element={
+							<ProtectedRoute>
+								<CartProto />
+							</ProtectedRoute>
+						}
+					/>
 					<Route
 						path="/orders"
 						element={
