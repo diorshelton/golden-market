@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cartService, type CartItemDetail } from "../services/api/cart";
 import { ROUTES } from "../constants";
 
 const Cart = () => {
+	const navigate = useNavigate();
 	const [cartItems, setCartItems] = useState<CartItemDetail[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [checkoutLoading, setCheckoutLoading] = useState(false);
 
 	// Fetch cart on mount
 	useEffect(() => {
@@ -76,13 +76,8 @@ const Cart = () => {
 	const subtotal = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
 	const total = subtotal;
 
-	const handleCheckout = async () => {
-		setCheckoutLoading(true);
-		// Simulate API call - replace with actual checkout endpoint
-		setTimeout(() => {
-			alert("Checkout complete!");
-			setCheckoutLoading(false);
-		}, 1500);
+	const handleCheckout = () => {
+		navigate("/checkout");
 	};
 
 	// Loading state
@@ -384,11 +379,11 @@ const Cart = () => {
 							{/* Checkout Button */}
 							<button
 								onClick={handleCheckout}
-								disabled={checkoutLoading || cartItems.length === 0}
+								disabled={cartItems.length === 0}
 								className="w-full py-3 rounded-lg font-bold text-white transition-all transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none mb-3"
 								style={{ background: "#3434a5" }}
 							>
-								{checkoutLoading ? "PROCESSING..." : "PROCEED TO CHECKOUT"}
+								PROCEED TO CHECKOUT
 							</button>
 
 							<Link

@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import MarketProto from "./pages/MarketProto";
 import CartProto from "./pages/CartProto";
@@ -22,6 +24,22 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<CartProto />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/checkout"
+						element={
+							<ProtectedRoute>
+								<Checkout />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/orders/:id/confirmation"
+						element={
+							<ProtectedRoute>
+								<OrderConfirmation />
 							</ProtectedRoute>
 						}
 					/>

@@ -16,6 +16,7 @@ export const ROUTES = {
 	HOME: "/",
 	PRODUCTS: "/products",
 	CART: "/cart",
+	CHECKOUT: "/checkout",
 	ORDERS: "/orders",
 	INVENTORY: "/inventory",
 	LOGIN: "/login",
