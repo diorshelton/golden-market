@@ -9,11 +9,19 @@ const apiClient: AxiosInstance = axios.create({
 	withCredentials: true,
 });
 
-// Add token to every request
+// In-memory token store (not accessible via XSS unlike localStorage)
+let accessToken: string | null = null;
+
+export const setAccessToken = (token: string | null) => {
+	accessToken = token;
+};
+
+export const getAccessToken = () => accessToken;
+
+// Attach in-memory token to every request
 apiClient.interceptors.request.use((config) => {
-	const token = localStorage.getItem("accessToken");
-	if (token) {
-		config.headers.Authorization = `Bearer ${token}`;
+	if (accessToken) {
+		config.headers.Authorization = `Bearer ${accessToken}`;
 	}
 	return config;
 });
@@ -36,12 +44,12 @@ apiClient.interceptors.response.use(
 					{ withCredentials: true }
 				);
 
-				localStorage.setItem("accessToken", data.token);
+				accessToken = data.token;
 				originalRequest.headers.Authorization = `Bearer ${data.token}`;
 
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				localStorage.removeItem("accessToken");
+				accessToken = null;
 				localStorage.removeItem("user");
 				window.location.href = `${import.meta.env.BASE_URL}login`;
 				return Promise.reject(refreshError);

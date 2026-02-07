@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { authService, userService } from "../services/api";
+import { setAccessToken } from "../services/api/client";
 import type { ReactNode } from "react";
 import { AuthContext } from "../hooks/useAuth";
 
@@ -16,15 +17,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		const loadUser = () => {
-			const accessToken = localStorage.getItem("accessToken");
 			const storedUser = localStorage.getItem("user");
 
-			if (accessToken && storedUser) {
+			if (storedUser) {
 				try {
 					setUser(JSON.parse(storedUser));
 				} catch (error) {
 					console.error("Failed to parse stored user:", error);
-					localStorage.removeItem("accessToken");
 					localStorage.removeItem("user");
 				}
 			}
@@ -36,9 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const login = async (email: string, password: string) => {
 		const data = await authService.login({ email, password });
-
-		// Set token temporarily for profile fetch
-		localStorage.setItem("accessToken", data.token);
+		setAccessToken(data.token);
 
 		// Fetch user profile after successful login
 		let userData;
@@ -52,13 +49,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			};
 		} catch (error) {
 			console.error("Failed to fetch user profile:", error);
-			// Clean up on failure
-			localStorage.removeItem("accessToken");
+			setAccessToken(null);
 			localStorage.removeItem("user");
 			throw error;
 		}
 
-		// Only update state after everything succeeded
 		localStorage.setItem("user", JSON.stringify(userData));
 		setUser(userData);
 	};
@@ -86,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const logout = () => {
 		authService.logout().catch(console.error);
-		localStorage.removeItem("accessToken");
+		setAccessToken(null);
 		localStorage.removeItem("user");
 		setUser(null);
 	};
