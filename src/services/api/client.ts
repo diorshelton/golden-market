@@ -41,7 +41,8 @@ apiClient.interceptors.response.use(
 
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				localStorage.clear();
+				localStorage.removeItem("accessToken");
+				localStorage.removeItem("user");
 				window.location.href = `${import.meta.env.BASE_URL}login`;
 				return Promise.reject(refreshError);
 			}

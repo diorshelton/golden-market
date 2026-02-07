@@ -24,7 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 					setUser(JSON.parse(storedUser));
 				} catch (error) {
 					console.error("Failed to parse stored user:", error);
-					localStorage.clear();
+					localStorage.removeItem("accessToken");
+					localStorage.removeItem("user");
 				}
 			}
 			setIsLoading(false);
@@ -35,25 +36,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const login = async (email: string, password: string) => {
 		const data = await authService.login({ email, password });
+
+		// Set token temporarily for profile fetch
 		localStorage.setItem("accessToken", data.token);
 
 		// Fetch user profile after successful login
+		let userData;
 		try {
 			const profile = await userService.getProfile();
-			const userData = {
+			userData = {
 				id: parseInt(profile.id) || 0,
 				username: profile.username,
 				email: profile.email,
 				coins: profile.balance,
 			};
-			localStorage.setItem("user", JSON.stringify(userData));
-			setUser(userData);
 		} catch (error) {
 			console.error("Failed to fetch user profile:", error);
-			// Clear token if we can't get user data
+			// Clean up on failure
 			localStorage.removeItem("accessToken");
+			localStorage.removeItem("user");
 			throw error;
 		}
+
+		// Only update state after everything succeeded
+		localStorage.setItem("user", JSON.stringify(userData));
+		setUser(userData);
 	};
 
 	const register = async (
@@ -79,7 +86,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const logout = () => {
 		authService.logout().catch(console.error);
-		localStorage.clear();
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("user");
 		setUser(null);
 	};
 
