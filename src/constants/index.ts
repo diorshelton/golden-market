@@ -4,18 +4,12 @@
 export const API_BASE_URL =
 	import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
 
-// Token Configuration
-export const TOKEN_KEYS = {
-	ACCESS: "accessToken",
-	REFRESH: "refreshToken",
-	USER: "user",
-} as const;
-
 // Route Paths
 export const ROUTES = {
 	HOME: "/",
 	PRODUCTS: "/products",
 	CART: "/cart",
+	CHECKOUT: "/checkout",
 	ORDERS: "/orders",
 	INVENTORY: "/inventory",
 	LOGIN: "/login",

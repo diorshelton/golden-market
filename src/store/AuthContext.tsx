@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { authService, userService } from "../services/api";
+import { setAccessToken } from "../services/api/client";
 import type { ReactNode } from "react";
 import { AuthContext } from "../hooks/useAuth";
 
@@ -16,15 +17,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		const loadUser = () => {
-			const accessToken = localStorage.getItem("accessToken");
 			const storedUser = localStorage.getItem("user");
 
-			if (accessToken && storedUser) {
+			if (storedUser) {
 				try {
 					setUser(JSON.parse(storedUser));
 				} catch (error) {
 					console.error("Failed to parse stored user:", error);
-					localStorage.clear();
+					localStorage.removeItem("user");
 				}
 			}
 			setIsLoading(false);
@@ -35,25 +35,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const login = async (email: string, password: string) => {
 		const data = await authService.login({ email, password });
-		localStorage.setItem("accessToken", data.token);
+		setAccessToken(data.token);
 
 		// Fetch user profile after successful login
+		let userData;
 		try {
 			const profile = await userService.getProfile();
-			const userData = {
+			userData = {
 				id: parseInt(profile.id) || 0,
 				username: profile.username,
 				email: profile.email,
 				coins: profile.balance,
 			};
-			localStorage.setItem("user", JSON.stringify(userData));
-			setUser(userData);
 		} catch (error) {
 			console.error("Failed to fetch user profile:", error);
-			// Clear token if we can't get user data
-			localStorage.removeItem("accessToken");
+			setAccessToken(null);
+			localStorage.removeItem("user");
 			throw error;
 		}
+
+		localStorage.setItem("user", JSON.stringify(userData));
+		setUser(userData);
 	};
 
 	const register = async (
@@ -79,7 +81,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const logout = () => {
 		authService.logout().catch(console.error);
-		localStorage.clear();
+		setAccessToken(null);
+		localStorage.removeItem("user");
 		setUser(null);
 	};
 

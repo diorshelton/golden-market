@@ -24,12 +24,6 @@ const ProfilePage = () => {
 
 	const fetchProfile = async () => {
 		try {
-			const token = localStorage.getItem("accessToken");
-			if (!token) {
-				// No token, redirect to login
-				navigate("/login");
-				return;
-			}
 			const data: UserProfile = await userService.getProfile();
 			setProfile(data);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,8 +42,7 @@ const ProfilePage = () => {
 		} catch (err) {
 			console.error("Logout error:", err);
 		} finally {
-			// Clear local storage and redirect regardless of API result
-			localStorage.clear();
+			localStorage.removeItem("user");
 			navigate("/login");
 		}
 	};
