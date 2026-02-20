@@ -35,3 +35,10 @@ dist-ssr
 
 # Private documentation
 docs/DEVELOPMENT_PLAN.md
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
