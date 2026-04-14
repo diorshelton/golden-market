@@ -7,7 +7,7 @@ import { ROUTES } from "../constants";
 
 const Checkout = () => {
 	const navigate = useNavigate();
-	const { user } = useAuth();
+	const { user, refreshUser } = useAuth();
 	const [cartItems, setCartItems] = useState<CartItemDetail[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -42,6 +42,7 @@ const Checkout = () => {
 
 		try {
 			const order = await orderService.createOrder();
+			await refreshUser();
 			navigate(`/orders/${order.id}/confirmation`);
 		} catch (err: unknown) {
 			console.error("Failed to create order:", err);

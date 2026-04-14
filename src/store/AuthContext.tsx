@@ -86,6 +86,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setUser(null);
 	};
 
+	const refreshUser = async () => {
+		try {
+			const profile = await userService.getProfile();
+			const userData = {
+				id: parseInt(profile.id) || 0,
+				username: profile.username,
+				email: profile.email,
+				coins: profile.balance,
+			};
+			localStorage.setItem("user", JSON.stringify(userData));
+			setUser(userData);
+		} catch (error) {
+			console.error("Failed to refresh user:", error);
+		}
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -95,6 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				login,
 				register,
 				logout,
+				refreshUser,
 			}}
 		>
 			{children}
