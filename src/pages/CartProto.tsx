@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { cartService, type CartItemDetail } from "../services/api/cart";
+import { useAuth } from "../hooks/useAuth";
 import { ROUTES } from "../constants";
 
 const Cart = () => {
 	const navigate = useNavigate();
+	const { user } = useAuth();
 	const [cartItems, setCartItems] = useState<CartItemDetail[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -372,7 +374,7 @@ const Cart = () => {
 							>
 								<div className="flex items-center justify-between text-white">
 									<span className="text-sm opacity-90">Your Balance</span>
-									<span className="text-2xl font-bold">5,000 💰</span>
+									<span className="text-2xl font-bold">{user?.coins?.toLocaleString() ?? 0} 💰</span>
 								</div>
 							</div>
 
