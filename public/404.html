@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Golden Market</title>
+    <script>
+      /**
+       * GitHub Pages SPA routing fix.
+       *
+       * GitHub Pages is a static file host — it only knows about actual files
+       * in the repo. When a user refreshes on a client-side route like
+       * /golden-market/cart, GitHub looks for a file at that path, finds
+       * nothing, and serves this 404.html instead of the app's own 404.
+       *
+       * This script intercepts that by immediately redirecting back to
+       * index.html, but encodes the original path as a query param (?p=).
+       * Example: /golden-market/cart → /golden-market/?p=cart
+       *
+       * The decode script in index.html then reads that param before React
+       * boots and rewrites the URL back to the original path, so React Router
+       * sees /cart and renders the correct page.
+       */
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          "//" +
+          l.host +
+          l.pathname.split("/").slice(0, 2).join("/") +
+          "/?p=" +
+          encodeURIComponent(
+            l.pathname.slice(1).split("/").slice(1).join("/")
+          ) +
+          (l.search ? "&" + l.search.slice(1) : "") +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/pegasus.svg";
 import { productService, type Product } from "../services/api/products";
 import { cartService } from "../services/api/cart";
+import { useAuth } from "../hooks/useAuth";
 
 const categoryIcons: Record<string, string> = {
 	Weapons: "⚔️",
@@ -15,6 +17,8 @@ const categoryIcons: Record<string, string> = {
 };
 
 const MarketProto = () => {
+	const navigate = useNavigate();
+	const { isAuthenticated } = useAuth();
 	const [selectedCategory, setSelectedCategory] = useState("All");
 	const [searchQuery, setSearchQuery] = useState("");
 	const [products, setProducts] = useState<Product[]>([]);
@@ -38,6 +42,10 @@ const MarketProto = () => {
 	}, []);
 
 	const handleAddToCart = async (productId: string) => {
+		if (!isAuthenticated) {
+			navigate("/login");
+			return;
+		}
 		setAddingToCart(productId);
 		try {
 			await cartService.addToCart(productId, 1);

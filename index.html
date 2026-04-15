@@ -5,6 +5,29 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Golden Market</title>
+    <script>
+      /**
+       * GitHub Pages SPA routing fix — decode half.
+       *
+       * Works in tandem with public/404.html. When GitHub Pages can't find a
+       * file for a route, it serves 404.html which encodes the original path
+       * into a ?p= query param and redirects here. This script reads that
+       * param and rewrites the URL back to the original path before React
+       * boots, so React Router sees the correct route and renders the right
+       * page without the user ever noticing the redirect.
+       */
+      (function () {
+        var p = new URLSearchParams(window.location.search).get("p");
+        if (p) {
+          var url =
+            window.location.pathname +
+            "/" +
+            decodeURIComponent(p) +
+            window.location.hash;
+          window.history.replaceState(null, "", url);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
