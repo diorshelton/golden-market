@@ -6,33 +6,36 @@
 
 **Backend Repository:** [golden-market-api](https://github.com/diorshelton/golden-market-api)
 
-Golden Market is a fantasy-themed e-commerce platform where users can browse, search, and purchase items to add to their inventory.
+Golden Market is a fantasy-themed e-commerce platform where users can browse, search, and purchase items to add to their inventory using virtual coins.
 
 ---
 
 ## Features
 
 - **User Authentication**: Secure registration and login with JWT-based authentication
-- **Protected Routes**: Profile pages and user-specific content secured behind authentication
+- **Coin Economy**: New users start with 5,000 coins to spend in the marketplace
 - **Marketplace Browsing**: Browse fantasy items with category filtering and search
+- **Shopping Cart**: Add, update, and remove items before checkout
+- **Checkout Flow**: Purchase items with coins — balance updates instantly after each order
+- **Order History**: View all past orders and their details
+- **Inventory**: Track all items acquired through purchases
+- **Protected Routes**: User-specific pages secured behind authentication
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Modern React**: Built with React 19 and the latest React Compiler for optimal performance
-- **Type Safety**: Full TypeScript implementation with strict mode enabled
 
 ---
 
 ## Tech Stack
 
 **Frontend**
-- React 19.1.1
-- TypeScript 5.9
+- React 19
+- TypeScript
 - React Router v7
 - Tailwind CSS 4
+- Axios
 
 **Build & Development**
 - Vite 7
-- ESLint with React plugins
-- React Compiler (Babel plugin)
+- ESLint
 
 **Deployment**
 - GitHub Pages
@@ -44,15 +47,15 @@ Golden Market is a fantasy-themed e-commerce platform where users can browse, se
 
 ### Prerequisites
 
-- Node.js LTS (latest Long Term Support version)
-- npm or yarn
+- Node.js LTS
+- npm
 
 ### Installation
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/diorshelton/golden-market-fe.git
-   cd golden-market-fe
+   git clone https://github.com/diorshelton/golden-market.git
+   cd golden-market
    ```
 
 2. Install dependencies
@@ -60,15 +63,14 @@ Golden Market is a fantasy-themed e-commerce platform where users can browse, se
    npm install
    ```
 
-3. Create environment file
+3. Create a local environment file
    ```bash
-   # Create .env.local file in the root directory
    touch .env.local
    ```
 
-4. Add your environment variables to `.env.local`
+4. Add the API URL to `.env.local`
    ```env
-   VITE_API_URL=http://localhost:8080
+   VITE_API_URL=https://golden-market-api.onrender.com/api/v1
    ```
 
 5. Start the development server
@@ -92,20 +94,32 @@ The production-ready files will be in the `dist/` directory.
 
 ```
 src/
-├── pages/              # Full page components
-│   ├── MarketProto.tsx    # Main marketplace with search & filtering
-│   ├── Login.tsx          # User authentication
-│   ├── Register.tsx       # New user registration
-│   └── Profile.tsx        # User profile (protected route)
-├── components/         # Reusable components
-│   ├── Header.tsx         # Navigation header
-│   ├── Footer.tsx         # Footer component
-│   └── ProtectedRoute.tsx # Authentication wrapper
-├── config/
-│   └── api.ts             # API client configuration
-├── assets/             # Static assets (images, icons)
-├── App.tsx             # Root component with routing
-└── main.tsx            # Application entry point
+├── pages/                    # Full page components
+│   ├── Marketplace           # Browse products with search & category filtering
+│   ├── Cart                  # Shopping cart
+│   ├── Checkout              # Order placement and coin deduction
+│   ├── Order Confirmation    # Post-purchase summary
+│   ├── Orders                # Order history
+│   ├── Inventory             # Items acquired through purchases
+│   ├── Profile               # User profile
+│   ├── Login
+│   └── Register
+├── components/
+│   ├── auth/                 # Protected route wrapper
+│   ├── Navbar/               # Navigation with live coin balance
+│   └── layout/               # Header and footer
+├── services/api/             # API client and service modules
+│   ├── Auth
+│   ├── Products
+│   ├── Cart
+│   ├── Orders
+│   ├── Inventory
+│   └── Users
+├── store/                    # Global auth state (AuthContext)
+├── hooks/                    # useAuth hook
+├── constants/                # Route constants
+├── App.tsx                   # Root component with routing
+└── main.tsx                  # Application entry point
 ```
 
 ---
@@ -114,43 +128,32 @@ src/
 
 ### ✅ Done
 - User registration and login
-- JWT authentication with token refresh
-- Basic marketplace prototype UI with search and filtering
-- Profile page prototype
-
-### 🚧 Working On Now
-- Connecting frontend to backend API
-- Product catalog (both API and UI)
-- Shopping cart functionality
-- Purchase flow and checkout
-
-### 📋 Next Up
-- User inventory page
-- Advanced search and filters
+- JWT authentication with sessionStorage token persistence
+- Coin economy (5,000 starting balance, deducted on purchase)
+- Marketplace with search and category filtering
+- Shopping cart (add, update, remove items)
+- Checkout with atomic order processing
 - Order history
+- User inventory
+- Profile page
+- GitHub Pages deployment with SPA routing support
 
 ### 💡 Future Ideas
 - User avatars and customization
-- Admin panel for product management
-
----
-
-## Known Limitations
-
-- **Backend Integration**: Frontend is not yet fully connected to the backend API. Currently using mock data for development.
-- **Feature Completeness**: Shopping cart and purchase functionality are in active development.
+- Admin panel for product and coin management
+- Same-domain deployment to fully leverage HttpOnly cookie auth
 
 ---
 
 ## Related Projects
 
-- **Backend API**: [golden-market-api](https://github.com/diorshelton/golden-market-api) - The Node.js backend powering Golden Market
+- **Backend API**: [golden-market-api](https://github.com/diorshelton/golden-market-api) — Go REST API powering Golden Market
 
 ---
 
 ## Feedback & Suggestions
 
-While this project is not currently open for contributions, suggestions and feedback are always welcome! Feel free to open an issue if you have ideas or spot any bugs.
+While this project is not currently open for contributions, suggestions and feedback are always welcome. Feel free to open an issue if you have ideas or spot any bugs.
 
 ---
 
