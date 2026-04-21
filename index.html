@@ -19,12 +19,11 @@
       (function () {
         var p = new URLSearchParams(window.location.search).get("p");
         if (p) {
-          var url =
-            window.location.pathname +
-            "/" +
-            decodeURIComponent(p) +
-            window.location.hash;
-          window.history.replaceState(null, "", url);
+          // Strip trailing slashes from base and leading slashes from path
+          // to prevent slash accumulation across repeated refreshes.
+          var base = window.location.pathname.replace(/\/+$/, "");
+          var path = decodeURIComponent(p).replace(/^\/+/, "");
+          window.history.replaceState(null, "", base + "/" + path + window.location.hash);
         }
       })();
     </script>
