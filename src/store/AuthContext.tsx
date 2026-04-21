@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { authService, userService } from "../services/api";
-import { setAccessToken } from "../services/api/client";
+import { setAccessToken, getAccessToken } from "../services/api/client";
 import type { ReactNode } from "react";
 import { AuthContext } from "../hooks/useAuth";
 
@@ -18,14 +18,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const loadUser = () => {
 			const storedUser = localStorage.getItem("user");
+			const token = getAccessToken();
 
-			if (storedUser) {
+			if (storedUser && token) {
 				try {
 					setUser(JSON.parse(storedUser));
 				} catch (error) {
 					console.error("Failed to parse stored user:", error);
 					localStorage.removeItem("user");
+					setAccessToken(null);
 				}
+			} else {
+				// Token or user missing — clear both to stay consistent
+				localStorage.removeItem("user");
+				setAccessToken(null);
 			}
 			setIsLoading(false);
 		};

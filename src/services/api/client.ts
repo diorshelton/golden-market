@@ -9,19 +9,26 @@ const apiClient: AxiosInstance = axios.create({
 	withCredentials: true,
 });
 
-// In-memory token store (not accessible via XSS unlike localStorage)
-let accessToken: string | null = null;
+// sessionStorage token store — survives page refresh, clears on tab close.
+// Less secure than HttpOnly cookies (readable by JS) but necessary given
+// the frontend and backend are on different domains (cross-origin cookie issues).
+const TOKEN_KEY = "access_token";
 
 export const setAccessToken = (token: string | null) => {
-	accessToken = token;
+	if (token) {
+		sessionStorage.setItem(TOKEN_KEY, token);
+	} else {
+		sessionStorage.removeItem(TOKEN_KEY);
+	}
 };
 
-export const getAccessToken = () => accessToken;
+export const getAccessToken = () => sessionStorage.getItem(TOKEN_KEY);
 
-// Attach in-memory token to every request
+// Attach token to every request
 apiClient.interceptors.request.use((config) => {
-	if (accessToken) {
-		config.headers.Authorization = `Bearer ${accessToken}`;
+	const token = getAccessToken();
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
 	}
 	return config;
 });
@@ -44,12 +51,12 @@ apiClient.interceptors.response.use(
 					{ withCredentials: true }
 				);
 
-				accessToken = data.token;
+				setAccessToken(data.token);
 				originalRequest.headers.Authorization = `Bearer ${data.token}`;
 
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				accessToken = null;
+				setAccessToken(null);
 				localStorage.removeItem("user");
 				window.location.href = `${import.meta.env.BASE_URL}login`;
 				return Promise.reject(refreshError);
