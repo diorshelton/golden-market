@@ -20,7 +20,7 @@
         var p = new URLSearchParams(window.location.search).get("p");
         if (p) {
           var url =
-            window.location.pathname.replace(/\/$/, "") +
+            window.location.pathname +
             "/" +
             decodeURIComponent(p) +
             window.location.hash;

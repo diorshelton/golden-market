@@ -26,7 +26,7 @@
           "//" +
           l.host +
           l.pathname.split("/").slice(0, 2).join("/") +
-          "/?p=" +
+          "?p=" +
           encodeURIComponent(
             l.pathname.slice(1).split("/").slice(1).join("/")
           ) +
