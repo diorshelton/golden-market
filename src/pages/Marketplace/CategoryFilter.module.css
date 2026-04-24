@@ -1,0 +1,37 @@
+.wrapper {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.button {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 0.625rem 1.5rem;
+  border-radius: 9px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--royal);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  min-height: 44px;
+}
+
+.button:hover {
+  background: rgba(52, 52, 165, 0.08);
+  border-color: var(--royal);
+}
+
+.buttonActive {
+  background: var(--royal);
+  color: #fff;
+  border-color: var(--royal);
+}
+
+.buttonActive:hover {
+  background: var(--royal);
+  opacity: 0.9;
+}

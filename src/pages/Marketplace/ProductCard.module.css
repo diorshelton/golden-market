@@ -1,0 +1,161 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Image area ── */
+.imageArea {
+  height: 135px;
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.375rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.imageArea img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Body ── */
+.body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.375rem;
+  margin-bottom: 0.625rem;
+}
+
+.name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--royal);
+  line-height: 1.2;
+}
+
+.categoryBadge {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(53, 114, 90, 0.12);
+  color: var(--forest);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 1.125rem;
+}
+
+.stockLow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.stockOut {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--danger);
+  line-height: 1;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: auto;
+  padding-top: 1.125rem;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3125rem;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--royal);
+  line-height: 1;
+}
+
+.price.muted {
+  color: var(--text-muted);
+}
+
+.priceUnit {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-body);
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  background: var(--gold);
+  color: var(--text-on-gold);
+  position: relative;
+  transition: opacity 0.15s;
+}
+
+.addButton::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
+.addButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.addButton:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}

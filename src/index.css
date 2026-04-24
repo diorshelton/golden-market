@@ -37,12 +37,22 @@
   --focus-royal:  0 0 0 2.5px rgba(52,52,165,0.22);
   --focus-danger: 0 0 0 2.5px rgba(185,28,28,0.20);
 
-  /* ── Typography ── */
+  /* ── Typography — colors ── */
   --text-body:    #4a6070;   /* 6.57:1 on white — AAA */
   --text-muted:   #6b7280;   /* 4.83:1 on white — AA */
   --text-on-gold: #1a1a1a;   /* 14.68:1 on gold — AAA */
   --font-display: 'Fraunces', serif;
   --font-body:    'Plus Jakarta Sans', sans-serif;
+
+  /* ── Type scale — Major Third (×1.25) ── */
+  --text-2xs: 0.64rem;    /* ~10px — tiny labels, unit text */
+  --text-xs:  0.8rem;     /* ~13px — badges, secondary labels */
+  --text-sm:  1rem;       /* ~16px — body text */
+  --text-md:  1.25rem;    /* ~20px — emphasis, price */
+  --text-lg:  1.5625rem;  /* ~25px — small headings */
+  --text-xl:  1.953rem;   /* ~31px — headings */
+  --text-2xl: 2.441rem;   /* ~39px — large headings */
+  --text-3xl: 3.052rem;   /* ~49px — hero display */
 }
 
 body {
