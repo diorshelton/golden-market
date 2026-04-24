@@ -277,10 +277,6 @@ const MarketProto = () => {
 				)}
 			</div>
 
-			{/* Footer */}
-			<footer className="mt-16 py-8 text-center text-gray-600">
-				<p>© 2025 Golden Market. All rights reserved.</p>
-			</footer>
 		</div>
 	);
 };

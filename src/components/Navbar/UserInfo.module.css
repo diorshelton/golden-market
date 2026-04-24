@@ -1,0 +1,21 @@
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--royal);
+  border: 1.5px solid rgba(245, 159, 0, 0.3);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.85;
+  flex-shrink: 0;
+}

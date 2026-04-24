@@ -1,0 +1,133 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--grad-page);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0.875rem 1.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-decoration: none;
+}
+
+.navMark {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: var(--royal);
+  border: 1.5px solid rgba(245, 159, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ── Desktop nav links ── */
+.nav {
+  display: none;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
+}
+
+.navLink {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.48);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navLink:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.navLinkActive {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+/* ── Desktop right side ── */
+.actions {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .actions {
+    display: flex;
+  }
+}
+
+.signInPill {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--royal);
+  border: 1.5px solid rgba(245, 159, 0, 0.3);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.signInPill:hover {
+  opacity: 0.9;
+}
+
+/* ── Mobile hamburger ── */
+.hamburger {
+  display: flex;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.15s;
+}
+
+.hamburger:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+}

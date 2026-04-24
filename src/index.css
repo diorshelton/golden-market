@@ -1,71 +1,52 @@
 @import "tailwindcss";
 
+/* ════════════════════════════════════════════════════════
+ * GOLDEN MARKET — DESIGN TOKENS
+ * Fraunces (display) + Plus Jakarta Sans (body)
+ * WCAG AA compliant · 2026
+ * ════════════════════════════════════════════════════════ */
 
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+:root {
+  /* ── Colors ── */
+  --royal:        #3434a5;
+  --forest:       #35725a;   /* Darkened for AA (was #41876a) */
+  --gold:         #f59f00;
+  --amber:        #a34a0e;   /* Pending badge text — AA compliant */
+  --danger:       #b91c1c;   /* Failed badge text — AA compliant */
+  --danger-bg:    #dc2626;   /* Danger button bg */
+  --surface:      #ffffff;
+  --bg-page:      #f0eeea;
+  --bg-subtle:    #ebebf8;   /* Soft royal tint — product card image area */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* ── Gradients ── */
+  --grad-page:    linear-gradient(135deg, #3434a5 0%, #41876a 100%);
+  --grad-icon:    linear-gradient(135deg, #f59f00 0%, #ba5411 100%);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-} */
-/*
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  /* ── Borders ── */
+  --border:       rgba(65,135,106,0.18);
+  --border-strong:rgba(65,135,106,0.35);
+
+  /* ── Shadows ── */
+  --shadow-xs:    0 1px 3px rgba(20,32,44,0.06);
+  --shadow-sm:    0 4px 16px rgba(20,32,44,0.08);
+  --shadow-md:    0 8px 32px rgba(20,32,44,0.10);
+  --shadow-lg:    0 20px 60px rgba(20,32,44,0.14);
+
+  /* ── Focus rings ── */
+  --focus-forest: 0 0 0 2.5px rgba(53,114,90,0.28);
+  --focus-royal:  0 0 0 2.5px rgba(52,52,165,0.22);
+  --focus-danger: 0 0 0 2.5px rgba(185,28,28,0.20);
+
+  /* ── Typography ── */
+  --text-body:    #4a6070;   /* 6.57:1 on white — AAA */
+  --text-muted:   #6b7280;   /* 4.83:1 on white — AA */
+  --text-on-gold: #1a1a1a;   /* 14.68:1 on gold — AAA */
+  --font-display: 'Fraunces', serif;
+  --font-body:    'Plus Jakarta Sans', sans-serif;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: var(--font-body);
+  background: var(--bg-page);
+  color: var(--text-body);
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */

@@ -12,10 +12,11 @@ interface MobileMenuProps {
 }
 
 const navLinks = [
-	{ to: ROUTES.HOME, label: "Products" },
+	{ to: ROUTES.HOME, label: "Market" },
 	{ to: ROUTES.CART, label: "Cart" },
 	{ to: ROUTES.ORDERS, label: "Orders" },
 	{ to: ROUTES.INVENTORY, label: "Inventory" },
+	{ to: ROUTES.PROFILE, label: "Profile" },
 ];
 
 const MobileMenu = ({
@@ -117,7 +118,7 @@ const MobileMenu = ({
 								onClose();
 							}}
 							className="w-full px-4 py-3 rounded-lg text-white font-medium hover:opacity-90 transition-opacity"
-							style={{ background: "#7f0921" }}
+							style={{ background: "var(--danger-bg)" }}
 						>
 							Sign Out
 						</button>
@@ -128,7 +129,7 @@ const MobileMenu = ({
 							className="block w-full px-4 py-3 rounded-lg text-white font-medium text-center hover:opacity-90 transition-opacity"
 							style={{ background: "#3434a5" }}
 						>
-							Login
+							Sign In
 						</NavLink>
 					)}
 				</div>
