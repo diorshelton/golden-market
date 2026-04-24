@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { Navbar } from "../Navbar";
-import Footer from "./Footer";
+import Footer from "../common/Footer";
 import { ROUTES } from "../../constants";
 
 const AUTH_ROUTES = [ROUTES.LOGIN, ROUTES.REGISTER];
