@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./store/AuthContext";
-import { Navbar } from "./components/Navbar";
+import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
@@ -16,8 +16,8 @@ function App() {
 	return (
 		<BrowserRouter basename={import.meta.env.BASE_URL}>
 			<AuthProvider>
-				<Navbar />
-				<Routes>
+					<Layout>
+					<Routes>
 					<Route path="/" element={<MarketProto />} />
 					<Route path="/products" element={<MarketProto />} />
 					<Route path="/cart"
@@ -69,7 +69,8 @@ function App() {
 							</ProtectedRoute>
 						}
 					/>
-				</Routes>
+					</Routes>
+				</Layout>
 			</AuthProvider>
 		</BrowserRouter>
 	);
