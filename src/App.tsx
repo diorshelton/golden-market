@@ -10,7 +10,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Marketplace from "./pages/Marketplace";
-import CartProto from "./pages/CartProto";
+import Cart from "./pages/Cart";
 
 function App() {
 	return (
@@ -23,7 +23,7 @@ function App() {
 					<Route path="/cart"
 						element={
 							<ProtectedRoute>
-								<CartProto />
+								<Cart />
 							</ProtectedRoute>
 						}
 					/>
