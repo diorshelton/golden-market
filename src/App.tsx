@@ -6,7 +6,7 @@ import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
-import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout/index";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Marketplace from "./pages/Marketplace";
