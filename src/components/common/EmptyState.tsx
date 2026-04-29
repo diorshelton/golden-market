@@ -6,7 +6,7 @@ interface Props {
   title: string;
   message: string;
   action?: {
-    label: string;
+    text: string;
     to: string;
   };
 }
@@ -18,7 +18,7 @@ const EmptyState = ({ icon, title, message, action }: Props) => (
     <p className={styles.message}>{message}</p>
     {action && (
       <Link to={action.to} className={styles.action}>
-        {action.label}
+        {action.text}
       </Link>
     )}
   </div>

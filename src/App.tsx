@@ -7,7 +7,7 @@ import ProfilePage from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
 import Checkout from "./pages/Checkout/index";
-import OrderConfirmation from "./pages/OrderConfirmation";
+import OrderConfirmation from "./pages/OrderConfirmation/index";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Marketplace from "./pages/Marketplace";
 import Cart from "./pages/Cart";
