@@ -6,11 +6,11 @@ import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
-import Checkout from "./pages/Checkout";
+import Checkout from "./pages/Checkout/index";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import MarketProto from "./pages/MarketProto";
-import CartProto from "./pages/CartProto";
+import Marketplace from "./pages/Marketplace";
+import Cart from "./pages/Cart";
 
 function App() {
 	return (
@@ -18,12 +18,12 @@ function App() {
 			<AuthProvider>
 					<Layout>
 					<Routes>
-					<Route path="/" element={<MarketProto />} />
-					<Route path="/products" element={<MarketProto />} />
+					<Route path="/" element={<Marketplace />} />
+					<Route path="/products" element={<Marketplace />} />
 					<Route path="/cart"
 						element={
 							<ProtectedRoute>
-								<CartProto />
+								<Cart />
 							</ProtectedRoute>
 						}
 					/>
