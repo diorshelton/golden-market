@@ -3,333 +3,249 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { validators } from "../utils/validators";
 import { ROUTES } from "../constants";
+import PegasusIcon from "../components/common/PegasusIcon";
+import styles from "./Register.module.css";
 
 const Register: React.FC = () => {
-	const [formData, setFormData] = useState({
-		username: "",
-		firstName: "",
-		lastName: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
-	});
-	const [errors, setErrors] = useState({
-		username: "",
-		firstName: "",
-		lastName: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
-		general: "",
-	});
-	const [loading, setLoading] = useState(false);
-	const navigate = useNavigate();
-	const { register } = useAuth();
+  const [formData, setFormData] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    general: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { register } = useAuth();
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-		// Clear error for this field when user types
-		setErrors({
-			...errors,
-			[name]: "",
-			general: "",
-		});
-	};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "", general: "" });
+  };
 
-	const validateForm = (): boolean => {
-		const usernameError = validators.username(formData.username);
-		const firstNameError = !formData.firstName ? "First name is required" : "";
-		const lastNameError = !formData.lastName ? "Last name is required" : "";
-		const emailError = validators.email(formData.email);
-		const passwordError = validators.password(formData.password);
-		const confirmPasswordError = validators.confirmPassword(
-			formData.password,
-			formData.confirmPassword
-		);
+  const validateForm = (): boolean => {
+    const usernameError = validators.username(formData.username);
+    const firstNameError = !formData.firstName ? "First name is required" : "";
+    const lastNameError = !formData.lastName ? "Last name is required" : "";
+    const emailError = validators.email(formData.email);
+    const passwordError = validators.password(formData.password);
+    const confirmPasswordError = validators.confirmPassword(
+      formData.password,
+      formData.confirmPassword
+    );
 
-		setErrors({
-			username: usernameError || "",
-			firstName: firstNameError || "",
-			lastName: lastNameError || "",
-			email: emailError || "",
-			password: passwordError || "",
-			confirmPassword: confirmPasswordError || "",
-			general: "",
-		});
+    setErrors({
+      username: usernameError || "",
+      firstName: firstNameError || "",
+      lastName: lastNameError || "",
+      email: emailError || "",
+      password: passwordError || "",
+      confirmPassword: confirmPasswordError || "",
+      general: "",
+    });
 
-		return (
-			!usernameError &&
-			!firstNameError &&
-			!lastNameError &&
-			!emailError &&
-			!passwordError &&
-			!confirmPasswordError
-		);
-	};
+    return (
+      !usernameError &&
+      !firstNameError &&
+      !lastNameError &&
+      !emailError &&
+      !passwordError &&
+      !confirmPasswordError
+    );
+  };
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-		if (!validateForm()) {
-			return;
-		}
+    setLoading(true);
+    setErrors({
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      general: "",
+    });
 
-		setLoading(true);
-		setErrors({
-			username: "",
-			firstName: "",
-			lastName: "",
-			email: "",
-			password: "",
-			confirmPassword: "",
-			general: "",
-		});
+    try {
+      await register(
+        formData.username,
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.password,
+        formData.confirmPassword
+      );
+      navigate(ROUTES.PROFILE);
+    } catch (err: any) {
+      setErrors({
+        username: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        general: err.response?.data?.error || "Registration failed. Please try again.",
+      });
+      setLoading(false);
+    }
+  };
 
-		try {
-			await register(
-				formData.username,
-				formData.firstName,
-				formData.lastName,
-				formData.email,
-				formData.password,
-				formData.confirmPassword
-			);
-			// User is automatically logged in after registration
-			navigate(ROUTES.PROFILE);
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (err: any) {
-			setErrors({
-				...errors,
-				general:
-					err.response?.data?.error || "Registration failed. Please try again.",
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
+  return (
+    <div className={styles.page}>
+      <div className={styles.container}>
 
-	return (
-		<div
-			className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-			style={{
-				background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
-			}}
-		>
-			<div className="w-full max-w-2xl relative z-10">
-				<div className="text-center mb-8">
-					<h1
-						className="text-4xl font-bold text-transparent bg-clip-text"
-						style={{
-							backgroundImage:
-								"linear-gradient(135deg, #f59f00 0%, #ffffff 100%)",
-						}}
-					>
-						Join Golden Market
-					</h1>
-					<p className="text-white text-opacity-90">Become a member today!</p>
-				</div>
+        {/* Auth mark + title */}
+        <div className={styles.brand}>
+          <div className={styles.authMark}>
+            <PegasusIcon width={44} height={44} color="#f59f00" />
+          </div>
+          <h1 className={styles.title}>Join Golden Market</h1>
+          <p className={styles.subtitle}>Become a member today!</p>
+        </div>
 
-				{/* Register Card */}
-				<div
-					className="rounded-2xl p-8 backdrop-blur-xl"
-					style={{
-						background: "rgba(255, 255, 255, 0.95)",
-						boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-					}}
-				>
-					{errors.general && (
-						<div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700">
-							{errors.general}
-						</div>
-					)}
+        {/* Form card */}
+        <div className={styles.card}>
+          {errors.general && (
+            <div className={styles.generalError} role="alert">
+              {errors.general}
+            </div>
+          )}
 
-					<form className="space-y-5" onSubmit={handleSubmit}>
-						{/* Username */}
-						<div>
-							<label
-								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#3434a5" }}
-							>
-								USERNAME
-							</label>
-							<input
-								type="text"
-								name="username"
-								value={formData.username}
-								onChange={handleChange}
-								placeholder="username"
-								className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
-								style={{
-									borderColor: errors.username ? "#ef4444" : "#41876a40",
-									color: "#3434a5",
-								}}
-							/>
-							{errors.username && (
-								<p className="mt-1 text-sm text-red-600">{errors.username}</p>
-							)}
-						</div>
+          <form className={styles.form} onSubmit={handleSubmit}>
 
-						{/* First and Last Name */}
-						<div className="grid grid-cols-2 gap-4">
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									FIRST NAME
-								</label>
-								<input
-									type="text"
-									name="firstName"
-									value={formData.firstName}
-									onChange={handleChange}
-									placeholder="First name"
-									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
-									style={{
-										borderColor: errors.firstName ? "#ef4444" : "#41876a40",
-										color: "#3434a5",
-									}}
-								/>
-								{errors.firstName && (
-									<p className="mt-1 text-sm text-red-600">
-										{errors.firstName}
-									</p>
-								)}
-							</div>
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									LAST NAME
-								</label>
-								<input
-									type="text"
-									name="lastName"
-									value={formData.lastName}
-									onChange={handleChange}
-									placeholder="Last name"
-									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
-									style={{
-										borderColor: errors.lastName ? "#ef4444" : "#41876a40",
-										color: "#3434a5",
-									}}
-								/>
-								{errors.lastName && (
-									<p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-								)}
-							</div>
-						</div>
+            {/* Username */}
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="username">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="username"
+                className={`${styles.input} ${errors.username ? styles.inputError : ""}`}
+              />
+              {errors.username && <p className={styles.fieldError}>{errors.username}</p>}
+            </div>
 
-						{/* Email */}
-						<div>
-							<label
-								className="block text-sm font-semibold mb-2 tracking-wide"
-								style={{ color: "#3434a5" }}
-							>
-								EMAIL ADDRESS
-							</label>
-							<input
-								type="email"
-								name="email"
-								value={formData.email}
-								onChange={handleChange}
-								placeholder="you@example.com"
-								className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none placeholder-gray-500"
-								style={{
-									borderColor: errors.email ? "#ef4444" : "#41876a40",
-									color: "#3434a5",
-								}}
-							/>
-							{errors.email && (
-								<p className="mt-1 text-sm text-red-600">{errors.email}</p>
-							)}
-						</div>
+            {/* First and Last Name */}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="firstName">
+                  First Name
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  placeholder="First name"
+                  className={`${styles.input} ${errors.firstName ? styles.inputError : ""}`}
+                />
+                {errors.firstName && <p className={styles.fieldError}>{errors.firstName}</p>}
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="lastName">
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Last name"
+                  className={`${styles.input} ${errors.lastName ? styles.inputError : ""}`}
+                />
+                {errors.lastName && <p className={styles.fieldError}>{errors.lastName}</p>}
+              </div>
+            </div>
 
-						{/* Password Fields */}
-						<div className="grid grid-cols-2 gap-4">
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									PASSWORD
-								</label>
-								<input
-									type="password"
-									name="password"
-									value={formData.password}
-									onChange={handleChange}
-									placeholder="Min. 8 characters"
-									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
-									style={{
-										borderColor: errors.password ? "#ef4444" : "#41876a40",
-										color: "#3434a5",
-									}}
-								/>
-								{errors.password && (
-									<p className="mt-1 text-sm text-red-600">{errors.password}</p>
-								)}
-							</div>
-							<div>
-								<label
-									className="block text-sm font-semibold mb-2 tracking-wide"
-									style={{ color: "#3434a5" }}
-								>
-									CONFIRM
-								</label>
-								<input
-									type="password"
-									name="confirmPassword"
-									value={formData.confirmPassword}
-									onChange={handleChange}
-									placeholder="Re-enter Password"
-									className="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:border-current placeholder-gray-500"
-									style={{
-										borderColor: errors.confirmPassword
-											? "#ef4444"
-											: "#41876a40",
-										color: "#3434a5",
-									}}
-								/>
-								{errors.confirmPassword && (
-									<p className="mt-1 text-sm text-red-600">
-										{errors.confirmPassword}
-									</p>
-								)}
-							</div>
-						</div>
+            {/* Email */}
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="email">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
+              />
+              {errors.email && <p className={styles.fieldError}>{errors.email}</p>}
+            </div>
 
-						<button
-							type="submit"
-							disabled={loading}
-							className="w-full py-4 rounded-xl font-bold text-white tracking-wide transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-							style={{
-								background: "#3434a5",
-							}}
-						>
-							{loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
-						</button>
-					</form>
+            {/* Password fields */}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="password">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Min. 8 characters"
+                  className={`${styles.input} ${errors.password ? styles.inputError : ""}`}
+                />
+                {errors.password && <p className={styles.fieldError}>{errors.password}</p>}
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label} htmlFor="confirmPassword">
+                  Confirm
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Re-enter password"
+                  className={`${styles.input} ${errors.confirmPassword ? styles.inputError : ""}`}
+                />
+                {errors.confirmPassword && <p className={styles.fieldError}>{errors.confirmPassword}</p>}
+              </div>
+            </div>
 
-					<div className="mt-6 text-center text-sm">
-						<span className="text-gray-500">Already a member? </span>
-						<Link
-							to={ROUTES.LOGIN}
-							className="font-semibold hover:underline"
-							style={{ color: "#41876a" }}
-						>
-							Sign in
-						</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+            <button type="submit" disabled={loading} className={styles.submitBtn}>
+              {loading ? "Creating account…" : "Create Account"}
+            </button>
+
+          </form>
+
+          <p className={styles.signinPrompt}>
+            Already a member?{" "}
+            <Link to={ROUTES.LOGIN} className={styles.signinLink}>
+              Sign in
+            </Link>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
 };
 
 export default Register;
