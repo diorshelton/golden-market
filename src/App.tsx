@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
 import Orders from "./pages/Orders/index";
-import Inventory from "./pages/Inventory";
+import Inventory from "./pages/Inventory/index";
 import Checkout from "./pages/Checkout/index";
 import OrderConfirmation from "./pages/OrderConfirmation/index";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
