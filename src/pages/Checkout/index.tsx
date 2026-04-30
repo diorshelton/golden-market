@@ -78,7 +78,7 @@ const Checkout = () => {
             icon="🛒"
             title="Your cart is empty"
             message="Add some items before checking out!"
-            action={{ label: "Browse Products", to: ROUTES.HOME }}
+            action={{ text: "Browse Products", to: ROUTES.HOME }}
           />
         </div>
       </div>

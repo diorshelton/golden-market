@@ -123,7 +123,7 @@ const Cart = () => {
                 icon="🛒"
                 title="Your cart is empty"
                 message="Add some items from the market!"
-                action={{ label: "Browse Products", to: ROUTES.HOME }}
+                action={{ text: "Browse Products", to: ROUTES.HOME }}
               />
             ) : (
               cartItems.map((item) => (
