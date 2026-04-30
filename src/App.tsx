@@ -4,7 +4,7 @@ import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProfilePage from "./pages/Profile";
-import Orders from "./pages/Orders";
+import Orders from "./pages/Orders/index";
 import Inventory from "./pages/Inventory";
 import Checkout from "./pages/Checkout/index";
 import OrderConfirmation from "./pages/OrderConfirmation/index";
