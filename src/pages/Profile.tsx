@@ -1,201 +1,149 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService, authService } from "../services/api";
+import { orderService } from "../services/api/orders";
+import { inventoryService } from "../services/api/inventory";
+import StatCard from "../components/common/StatCard";
+import styles from "./Profile.module.css";
 
 interface UserProfile {
-	id: string;
-	username: string;
-	first_name: string;
-	last_name: string;
-	email: string;
-	balance: number;
-	created_at: string;
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  balance: number;
+  created_at: string;
 }
 
 const ProfilePage = () => {
-	const [profile, setProfile] = useState<UserProfile | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
-	const navigate = useNavigate();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [orderCount, setOrderCount] = useState<number | null>(null);
+  const [itemCount, setItemCount] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		fetchProfile();
-	}, []);
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
-	const fetchProfile = async () => {
-		try {
-			const data: UserProfile = await userService.getProfile();
-			setProfile(data);
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (err: any) {
-			setError(err.response?.data?.error || "Failed to load profile");
-			// If it's a 401, the axios interceptor will handle token refresh automatically
-			// If refresh fails, it will redirect to login
-		} finally {
-			setLoading(false);
-		}
-	};
+  const fetchProfile = async () => {
+    try {
+      const profileData: UserProfile =
+        (await userService.getProfile()) as UserProfile;
+      setProfile(profileData);
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Failed to load profile");
+      setLoading(false);
+      return;
+    }
 
-	const handleLogout = async () => {
-		try {
-			await authService.logout();
-		} catch (err) {
-			console.error("Logout error:", err);
-		} finally {
-			localStorage.removeItem("user");
-			navigate("/login");
-		}
-	};
+    try {
+      const [orders, inventory] = await Promise.all([
+        orderService.getOrders(),
+        inventoryService.getInventory(),
+      ]);
+      setOrderCount(orders.length);
+      setItemCount(inventory.reduce((sum, item) => sum + item.quantity, 0));
+    } catch (err) {
+      console.error("Failed to load order/inventory counts:", err);
+      // non-critical — profile loaded successfully, counts stay as null (—)
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	if (loading) {
-		return (
-			<div
-				className="min-h-screen flex items-center justify-center"
-				style={{ background: "#ded6d6" }}
-			>
-				<div className="text-center">
-					<div
-						className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
-						style={{ borderColor: "#3434a5" }}
-					></div>
-					<p style={{ color: "#3434a5" }}>Loading...</p>
-				</div>
-			</div>
-		);
-	}
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      localStorage.removeItem("user");
+      navigate("/login");
+    }
+  };
 
-	if (error || !profile) {
-		return (
-			<div
-				className="min-h-screen flex items-center justify-center"
-				style={{ background: "#ded6d6" }}
-			>
-				<div className="text-center">
-					<p className="text-red-600 mb-4">
-						{error || "Failed to load profile"}
-					</p>
-					<button
-						onClick={() => navigate("/login")}
-						className="px-6 py-2 rounded-lg text-white font-medium"
-						style={{ background: "#3434a5" }}
-					>
-						Go to Login
-					</button>
-				</div>
-			</div>
-		);
-	}
-	return (
-		<div className="min-h-screen" style={{ background: "#ded6d6" }}>
-			<div className="max-w-7xl mx-auto px-4 py-8">
-				{/* Welcome Banner */}
-				<div
-					className="rounded-2xl p-10 mb-8 relative overflow-hidden"
-					style={{
-						background: "linear-gradient(135deg, #3434a5 0%, #41876a 100%)",
-					}}
-				>
-					<h2 className="text-3xl font-bold mb-1" style={{ color: "#ded6d6" }}>
-						Welcome back, {profile.first_name}!
-					</h2>
-					<p className="text-white text-opacity-80">
-						Member since {new Date(profile.created_at).toLocaleDateString()}
-					</p>
-				</div>
+  if (loading) {
+    return (
+      <div className={styles.stateWrap}>
+        <p className={styles.stateMessage}>Loading profile…</p>
+      </div>
+    );
+  }
 
-				{/* Stats Grid */}
-				<div className="grid grid-cols-3 gap-6 mb-8">
-					<div
-						className="rounded-xl p-6"
-						style={{
-							background: "#3434a5",
-							border: "1px solid rgba(65, 135, 106, 0.251)",
-						}}
-					>
-						<p className="text-gray-300 text-sm mb-2">Coin Balance</p>
-						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
-							{profile.balance}
-						</p>
-					</div>
-					<div
-						className="rounded-xl p-6"
-						style={{
-							background: "#3434a5",
-							border: "1px solid rgba(65, 135, 106, 0.251)",
-						}}
-					>
-						<p className="text-gray-400 text-sm mb-2">Orders</p>
-						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
-							0
-						</p>
-						<p className="text-xs text-gray-500 mt-1">Coming soon</p>
-					</div>
-					<div
-						className="rounded-xl p-6"
-						style={{
-							background: "#3434a5",
-							border: "1px solid rgba(65, 135, 106, 0.251)",
-						}}
-					>
-						<p className="text-gray-400 text-sm mb-2">Items</p>
-						<p className="text-3xl font-bold" style={{ color: "#ded6d6" }}>
-							0
-						</p>
-						<p className="text-xs text-gray-500 mt-1">Coming soon</p>
-					</div>
-				</div>
+  if (error || !profile) {
+    return (
+      <div className={styles.stateWrap}>
+        <p className={styles.errorText}>{error || "Failed to load profile"}</p>
+        <button
+          className={styles.retryButton}
+          onClick={() => navigate("/login")}
+        >
+          Go to Login
+        </button>
+      </div>
+    );
+  }
 
-				{/* Profile Details */}
-				<div
-					className="rounded-xl p-8"
-					style={{
-						background:
-							"linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%)",
-						border: "1px solid rgba(65, 135, 106, 0.251)",
-					}}
-				>
-					<h3 className="text-2xl font-bold mb-6" style={{ color: "#ded6d6" }}>
-						Profile Information
-					</h3>
-					<div className="grid grid-cols-2 gap-6 text-gray-300">
-						<div>
-							<p className="text-sm text-gray-500 mb-1">Username</p>
-							<p className="text-lg">@{profile.username}</p>
-						</div>
-						<div>
-							<p className="text-sm text-gray-500 mb-1">User ID</p>
-							<p className="text-xs">{profile.id}</p>
-						</div>
-						<div>
-							<p className="text-sm text-gray-500 mb-1">Full Name</p>
-							<p className="text-lg">
-								{profile.first_name} {profile.last_name}
-							</p>
-						</div>
-						<div>
-							<p className="text-sm text-gray-500 mb-1">Email</p>
-							<p className="text-lg">{profile.email}</p>
-						</div>
-					</div>
-					<div className="mt-8 flex gap-4">
-						<button
-							onClick={handleLogout}
-							className="px-6 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity"
-							style={{ background: "#7f0921" }}
-						>
-							Logout
-						</button>
-						<button
-							className="px-6 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity"
-							style={{ background: "#3434a5" }}
-						>
-							Edit Profile
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className={styles.page}>
+      <div className={styles.inner}>
+        {/* Welcome banner */}
+        <div className={styles.banner}>
+          <h2 className={styles.bannerTitle}>
+            Welcome back, {profile.first_name}!
+          </h2>
+          <p className={styles.bannerSub}>
+            Member since {new Date(profile.created_at).toLocaleDateString()}
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className={styles.statsGrid}>
+          <StatCard
+            label="Coin Balance"
+            value={profile.balance.toLocaleString()}
+          />
+          <StatCard label="Orders" value={orderCount ?? "—"} />
+          <StatCard label="Items Owned" value={itemCount ?? "—"} />
+        </div>
+
+        {/* Profile details */}
+        <div className={styles.detailsCard}>
+          <h3 className={styles.detailsTitle}>Profile Information</h3>
+
+          <div className={styles.detailsGrid}>
+            <div className={styles.field}>
+              <p className={styles.fieldLabel}>Username</p>
+              <p className={styles.fieldValue}>@{profile.username}</p>
+            </div>
+            <div className={styles.field}>
+              <p className={styles.fieldLabel}>User ID</p>
+              <p className={styles.fieldValueMono}>{profile.id}</p>
+            </div>
+            <div className={styles.field}>
+              <p className={styles.fieldLabel}>Full Name</p>
+              <p className={styles.fieldValue}>
+                {profile.first_name} {profile.last_name}
+              </p>
+            </div>
+            <div className={styles.field}>
+              <p className={styles.fieldLabel}>Email</p>
+              <p className={styles.fieldValue}>{profile.email}</p>
+            </div>
+          </div>
+
+          <div className={styles.actions}>
+            <button className={styles.logoutBtn} onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProfilePage;
