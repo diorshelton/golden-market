@@ -30,7 +30,8 @@ const ProfilePage = () => {
 
   const fetchProfile = async () => {
     try {
-      const profileData: UserProfile = await userService.getProfile() as UserProfile;
+      const profileData: UserProfile =
+        (await userService.getProfile()) as UserProfile;
       setProfile(profileData);
     } catch (err: any) {
       setError(err.response?.data?.error || "Failed to load profile");
@@ -76,7 +77,10 @@ const ProfilePage = () => {
     return (
       <div className={styles.stateWrap}>
         <p className={styles.errorText}>{error || "Failed to load profile"}</p>
-        <button className={styles.retryButton} onClick={() => navigate("/login")}>
+        <button
+          className={styles.retryButton}
+          onClick={() => navigate("/login")}
+        >
           Go to Login
         </button>
       </div>
@@ -86,7 +90,6 @@ const ProfilePage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.inner}>
-
         {/* Welcome banner */}
         <div className={styles.banner}>
           <h2 className={styles.bannerTitle}>
@@ -99,7 +102,10 @@ const ProfilePage = () => {
 
         {/* Stats */}
         <div className={styles.statsGrid}>
-          <StatCard label="Coin Balance" value={profile.balance.toLocaleString()} />
+          <StatCard
+            label="Coin Balance"
+            value={profile.balance.toLocaleString()}
+          />
           <StatCard label="Orders" value={orderCount ?? "—"} />
           <StatCard label="Items Owned" value={itemCount ?? "—"} />
         </div>
@@ -119,7 +125,9 @@ const ProfilePage = () => {
             </div>
             <div className={styles.field}>
               <p className={styles.fieldLabel}>Full Name</p>
-              <p className={styles.fieldValue}>{profile.first_name} {profile.last_name}</p>
+              <p className={styles.fieldValue}>
+                {profile.first_name} {profile.last_name}
+              </p>
             </div>
             <div className={styles.field}>
               <p className={styles.fieldLabel}>Email</p>
@@ -133,7 +141,6 @@ const ProfilePage = () => {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
