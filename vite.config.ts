@@ -6,11 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
 	base: '/golden-market/',
 	plugins: [
-		react({
-			babel: {
-				plugins: [["babel-plugin-react-compiler"]],
-			},
-		}),
+		react(),
 		tailwindcss(),
 	],
 });
