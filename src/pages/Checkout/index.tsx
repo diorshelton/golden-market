@@ -46,7 +46,14 @@ const Checkout = () => {
 
     try {
       const order = await orderService.createOrder();
-      await refreshUser();
+
+      try {
+        await refreshUser();
+      } catch (err) {
+        console.error("Failed to refresh user balance:", err);
+        // non-critical — order succeeded, balance will update on next load
+      }
+
       navigate(`/orders/${order.id}/confirmation`);
     } catch (err: unknown) {
       console.error("Failed to create order:", err);
