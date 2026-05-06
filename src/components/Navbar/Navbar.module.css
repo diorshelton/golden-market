@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: var(--grad-page);
+  background: var(--royal);
   border-bottom: 1px solid var(--border-strong);
 }
 
@@ -26,23 +26,11 @@
   text-decoration: none;
 }
 
-.navMark {
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
-  background: var(--royal);
-  border: 1.5px solid rgba(245, 159, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 .wordmark {
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 600;
-  color: #fff;
+  color: var(--gold);
 }
 
 /* ── Desktop nav links ── */
@@ -98,7 +86,7 @@
   white-space: nowrap;
   font-size: var(--text-sm);
   font-weight: 600;
-  color: #fff;
+  color: var(--gold);
   background: var(--royal);
   border: 1.5px solid rgba(245, 159, 0, 0.3);
   padding: 0.5rem 1.25rem;
