@@ -4,7 +4,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { ROUTES, APP_NAME } from "../../constants";
 import UserInfo from "./UserInfo";
 import MobileMenu from "./MobileMenu";
-import PegasusIcon from "../common/PegasusIcon";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
@@ -31,10 +30,7 @@ const Navbar = () => {
         <div className={styles.row}>
           {/* Brand */}
           <NavLink to={ROUTES.HOME} className={styles.brand}>
-            <div className={styles.navMark}>
-              <PegasusIcon width={38} height={38} />
-            </div>
-            <span className={styles.wordmark}>{APP_NAME}</span>
+<span className={styles.wordmark}>{APP_NAME}</span>
           </NavLink>
 
           {/* Desktop nav links */}
