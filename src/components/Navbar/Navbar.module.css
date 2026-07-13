@@ -99,6 +99,32 @@
   opacity: 0.9;
 }
 
+.guestLink {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.25rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+
+.guestLink:hover {
+  color: #fff;
+}
+
+.guestLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-royal);
+  border-radius: 4px;
+}
+
 /* ── Mobile hamburger ── */
 .hamburger {
   display: flex;

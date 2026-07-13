@@ -9,6 +9,7 @@ interface MobileMenuProps {
 	isAuthenticated: boolean;
 	user: { username: string; coins: number } | null;
 	onLogout: () => void;
+	onGuestLogin: () => void;
 }
 
 const navLinks = [
@@ -25,6 +26,7 @@ const MobileMenu = ({
 	isAuthenticated,
 	user,
 	onLogout,
+	onGuestLogin,
 }: MobileMenuProps) => {
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -123,14 +125,25 @@ const MobileMenu = ({
 							Sign Out
 						</button>
 					) : (
-						<NavLink
-							to={ROUTES.LOGIN}
-							onClick={onClose}
-							className="block w-full px-4 py-3 rounded-lg text-white font-medium text-center hover:opacity-90 transition-opacity"
-							style={{ background: "#3434a5" }}
-						>
-							Sign In
-						</NavLink>
+						<div className="flex flex-col gap-3">
+							<NavLink
+								to={ROUTES.LOGIN}
+								onClick={onClose}
+								className="block w-full px-4 py-3 rounded-lg text-white font-medium text-center hover:opacity-90 transition-opacity"
+								style={{ background: "#3434a5" }}
+							>
+								Sign In
+							</NavLink>
+							<button
+								onClick={() => {
+									onGuestLogin();
+									onClose();
+								}}
+								className="w-full px-4 py-3 rounded-lg text-white/85 font-medium text-center underline hover:text-white transition-colors"
+							>
+								Continue as Guest
+							</button>
+						</div>
 					)}
 				</div>
 			</div>

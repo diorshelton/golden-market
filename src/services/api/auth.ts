@@ -48,6 +48,11 @@ export const authService = {
 		return response.data;
 	},
 
+	guestLogin: async () => {
+		const response = await apiClient.post<LoginResponse>("/auth/guest-login");
+		return response.data;
+	},
+
 	refresh: async (refreshToken: string) => {
 		const response = await apiClient.post<RefreshResponse>("/auth/refresh", {
 			refresh_token: refreshToken,
