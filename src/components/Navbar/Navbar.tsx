@@ -16,12 +16,21 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate(ROUTES.LOGIN);
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      await loginAsGuest();
+      navigate(ROUTES.HOME);
+    } catch (error) {
+      console.error("Guest login failed:", error);
+    }
   };
 
   return (
@@ -55,9 +64,14 @@ const Navbar = () => {
             {isAuthenticated && user ? (
               <UserInfo username={user.username} coins={user.coins} />
             ) : (
-              <NavLink to={ROUTES.LOGIN} className={styles.signInPill}>
-                Sign In
-              </NavLink>
+              <>
+                <button onClick={handleGuestLogin} className={styles.guestLink}>
+                  Continue as Guest
+                </button>
+                <NavLink to={ROUTES.LOGIN} className={styles.signInPill}>
+                  Sign In
+                </NavLink>
+              </>
             )}
           </div>
 
@@ -92,6 +106,7 @@ const Navbar = () => {
         isAuthenticated={isAuthenticated}
         user={user}
         onLogout={handleLogout}
+        onGuestLogin={handleGuestLogin}
       />
     </header>
   );

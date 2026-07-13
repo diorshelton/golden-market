@@ -12,6 +12,7 @@ interface AuthContextType {
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<void>;
+	loginAsGuest: () => Promise<void>;
 	register: (
 		username: string,
 		firstName: string,

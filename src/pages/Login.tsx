@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState({ email: "", password: "", general: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginAsGuest } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,6 +42,23 @@ const Login: React.FC = () => {
         email: "",
         password: "",
         general: err.response?.data?.error || "Login failed. Please try again.",
+      });
+      setLoading(false);
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    setLoading(true);
+    setErrors({ email: "", password: "", general: "" });
+
+    try {
+      await loginAsGuest();
+      navigate(ROUTES.PROFILE);
+    } catch (err: any) {
+      setErrors({
+        email: "",
+        password: "",
+        general: "Guest login failed. Please try again.",
       });
       setLoading(false);
     }
@@ -126,6 +143,15 @@ const Login: React.FC = () => {
 
             <button type="submit" disabled={loading} className={styles.submitBtn}>
               {loading ? "Signing in…" : "Sign In"}
+            </button>
+
+            <button
+              type="button"
+              disabled={loading}
+              onClick={handleGuestLogin}
+              className={styles.guestBtn}
+            >
+              Continue as Guest
             </button>
           </form>
 

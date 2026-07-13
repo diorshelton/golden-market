@@ -39,11 +39,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		loadUser();
 	}, []);
 
-	const login = async (email: string, password: string) => {
-		const data = await authService.login({ email, password });
-		setAccessToken(data.token);
+	// Shared by login and loginAsGuest: takes the access token from either
+	// flow, fetches the profile, and settles auth state.
+	const completeLogin = async (token: string) => {
+		setAccessToken(token);
 
-		// Fetch user profile after successful login
 		let userData;
 		try {
 			const profile = await userService.getProfile();
@@ -62,6 +62,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		localStorage.setItem("user", JSON.stringify(userData));
 		setUser(userData);
+	};
+
+	const login = async (email: string, password: string) => {
+		const data = await authService.login({ email, password });
+		await completeLogin(data.token);
+	};
+
+	const loginAsGuest = async () => {
+		const data = await authService.guestLogin();
+		await completeLogin(data.token);
 	};
 
 	const register = async (
@@ -115,6 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				isAuthenticated: !!user,
 				isLoading,
 				login,
+				loginAsGuest,
 				register,
 				logout,
 				refreshUser,

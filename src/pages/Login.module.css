@@ -180,6 +180,36 @@
   cursor: not-allowed;
 }
 
+.guestBtn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 9px;
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-body);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px;
+  margin-top: 0.75rem;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.guestBtn:hover:not(:disabled) {
+  background: var(--bg-subtle);
+}
+
+.guestBtn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-royal);
+}
+
+.guestBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ── Sign up prompt ── */
 .signupPrompt {
   font-size: var(--text-sm);
